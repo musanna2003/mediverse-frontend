@@ -9,6 +9,7 @@ import SellerDashboard from "../Layout/Dashbord";
 import Dashboard from "../Layout/Dashbord";
 import AddProduct from "../pages/AddProduct";
 import Dash from "../pages/Dash";
+import UserRoute from "./privet_route/UserRoute";
 
 const router = createBrowserRouter([
     {
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
         children : [
             {
                 index : true,
-                element : <Dash></Dash>
+                element : <UserRoute><Dash></Dash></UserRoute>
             },
             {
                 path : "/dashboard/addproduct",

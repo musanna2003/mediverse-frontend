@@ -4,29 +4,60 @@ import { useForm } from 'react-hook-form';
 const categories = ['Pain Relief', 'Antibiotics', 'Vitamins', 'First Aid', 'Diabetes Care', 'Heart Care'];
 
 const AddProduct = () => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  const [preview, setPreview] = useState(null);
+const { register, handleSubmit, reset, formState: { errors } } = useForm();
+const [preview, setPreview] = useState(null);
 
-  const onSubmit = (data) => {
-    const productData = {
-      ...data,
-      image: data.image[0], // file input is an array
-    };
-    console.log(productData);
+const imgbbApiKey = "e91481940f2813829e1d71293116b6cb"; // Replace with your real key
 
-    // Reset the form
-    reset();
-    setPreview(null);
-  };
+const onSubmit = async (data) => {
+    const imageFile = data.image[0];
+    const formData = new FormData();
+    formData.append("image", imageFile);
 
-  const handleImagePreview = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
+    try {
+        // Upload image to ImgBB
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
+        method: "POST",
+        body: formData,
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+        const imageUrl = result.data.url;
+
+        const productData = {
+            name: data.name,
+            category: data.category,
+            quantity: parseInt(data.quantity),
+            price: parseFloat(data.price),
+            description: data.description,
+            image: imageUrl,
+        };
+
+        console.log("Uploaded Product:", productData);
+
+        // You can now send `productData` to your backend (Firebase, Express, etc.)
+
+        reset();
+        setPreview(null);
+        } else {
+        console.error("Image upload failed:", result);
+        }
+    } catch (error) {
+        console.error("Error uploading image:", error);
     }
-  };
+};
 
-  return (
+
+const handleImagePreview = (e) => {
+const file = e.target.files[0];
+if (file) {
+    setPreview(URL.createObjectURL(file));
+}
+};
+
+return (
     <div className="max-w-2xl mx-auto bg-base-200 p-6 rounded shadow">
       <h2 className="text-2xl font-semibold mb-4">Add New Product</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
