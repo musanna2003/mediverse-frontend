@@ -1,7 +1,10 @@
 import React from 'react';
 import { FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaCartShopping } from "react-icons/fa6";
 
-const ProductTable = ({ products, onSelect, onView }) => {
+const ProductTable = ({ products, onSelect, onView,onDelete,onEdit }) => {
+  const role ='seller'
   return (
     <div className="overflow-x-auto w-full">
       <table className="table table-zebra w-full">
@@ -34,17 +37,37 @@ const ProductTable = ({ products, onSelect, onView }) => {
                 <td>{product.stock || 'Available'}</td>
                 <td className="flex gap-2">
                   <button
-                    onClick={() => onSelect(product)}
-                    className="btn btn-sm btn-outline btn-primary"
-                  >
-                    Select
-                  </button>
-                  <button
-                    onClick={() => onView(product)}
-                    className="btn btn-sm btn-outline btn-info"
-                  >
-                    <FaEye />
-                  </button>
+                        onClick={() => onView(product)}
+                        className="btn btn-sm btn-outline btn-info"
+                      >
+                        <FaEye />
+                      </button>
+                  {role === 'user' ? (
+                    <>
+                      <button
+                        onClick={() => onSelect(product)}
+                        className="btn btn-sm btn-outline btn-primary"
+                      >
+                        <FaCartShopping />
+                      </button>
+                    
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => onEdit(product)}
+                        className="btn btn-sm btn-outline btn-warning"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        onClick={() => onDelete(product)}
+                        className="btn btn-sm btn-outline btn-error"
+                      >
+                        <FaTrash />
+                      </button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))

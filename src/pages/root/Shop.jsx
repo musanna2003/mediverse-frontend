@@ -1,49 +1,43 @@
-import ProductTable from '../components/ProductTable';
+import ProductTable from '../../components/ProductTable';
 import React, { useState } from 'react';
 import { FaSortAmountDownAlt } from 'react-icons/fa';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 const Shop = () => {
-    const products = [
-        {
-            id: 1,
-            name: 'Napa Extra 500mg',
-            category: 'Pain Relief',
-            image: 'https://medeasy.health/_next/image?url=https%3A%2F%2Fapi.medeasy.health%2Fmedia%2Fmedicines%2FIMG-20231023-WA0193.jpg&w=640&q=100',
-            price: 10,
-            stock: 50,
-        },
-        {
-            id: 2,
-            name: 'Napa Extra 500mg',
-            category: 'Pain Relief',
-            image: 'https://medeasy.health/_next/image?url=https%3A%2F%2Fapi.medeasy.health%2Fmedia%2Fmedicines%2FIMG-20231023-WA0193.jpg&w=640&q=100',
-            price: 10,
-            stock: 50,
-        },
-        {
-            id: 3,
-            name: 'Napa Extra 500mg',
-            category: 'Pain Relief',
-            image: 'https://medeasy.health/_next/image?url=https%3A%2F%2Fapi.medeasy.health%2Fmedia%2Fmedicines%2FIMG-20231023-WA0193.jpg&w=640&q=100',
-            price: 10,
-            stock: 50,
-        },
-        {
-            id: 4,
-            name: 'Napa Extra 500mg',
-            category: 'Pain Relief',
-            image: 'https://medeasy.health/_next/image?url=https%3A%2F%2Fapi.medeasy.health%2Fmedia%2Fmedicines%2FIMG-20231023-WA0193.jpg&w=640&q=100',
-            price: 10,
-            stock: 50,
-        },
-        // more products...
-        ];
 
-        const [searchTerm, setSearchTerm] = useState('');
-        const [sortOrder, setSortOrder] = useState('');
-        const [selectedCategory, setSelectedCategory] = useState('');
-        console.log(sortOrder)
-        const categories = ['All', ...new Set(products.map(p => p.category || 'Unknown'))];
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortOrder, setSortOrder] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
+    console.log(sortOrder)
+    
+
+    //functions
+
+    const fetchMedicines = async () => {
+        const params = {};
+
+        if (searchTerm) params.search = searchTerm;
+        if (selectedCategory && selectedCategory !== 'All') params.category = selectedCategory;
+        if (sortOrder === 'low') params.sort = 'price_asc';
+        else if (sortOrder === 'high') params.sort = 'price_desc';
+
+        const res = await axios.get('http://localhost:3000/products', { params });
+        return res.data;
+    };
+
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ['medicines', searchTerm, selectedCategory, sortOrder], // refetches on any change
+        queryFn: fetchMedicines,
+    });
+
+    if (isLoading) return <p>Loading...</p>;
+    if (isError) return <p>Something went wrong!</p>;
+
+    const categories = ['All', ...new Set(data.map(p => p.category || 'Unknown'))];
+
+
+   
 
     return (
         <div className="max-w-7xl mx-auto p-4">
@@ -53,8 +47,8 @@ const Shop = () => {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        // Handle your search logic here if needed (searchTerm is already being updated)
-                        console.log("Searching for:", searchTerm);
+                        const searchValue = e.target.search.value;
+                        setSearchTerm(searchValue); // 🔄 Triggers TanStack Query refetch
                     }}
                     className="flex w-full md:max-w-md"
                     >
@@ -62,13 +56,13 @@ const Shop = () => {
                         type="text"
                         placeholder="Search medicine..."
                         className="input input-bordered rounded-r-none w-full"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        name="search"
                     />
                     <button type="submit" className="btn btn-primary rounded-l-none">
                         Search
                     </button>
                 </form>
+
 
 
                 {/* Category dropdown */}
@@ -100,7 +94,7 @@ const Shop = () => {
             </div>
 
             {/* 🧾 Product Table */}
-            <ProductTable products={products} />
+            <ProductTable products={data} />
         </div>
     );
 };

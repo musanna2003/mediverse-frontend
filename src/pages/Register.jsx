@@ -7,7 +7,7 @@ import { updateProfile } from 'firebase/auth';
 import { useLocation, useNavigate } from 'react-router';
 
 const Register = () => {
-    const imgbbApiKey = "e91481940f2813829e1d71293116b6cb"; 
+    const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY; 
     const {
         register,
         handleSubmit,

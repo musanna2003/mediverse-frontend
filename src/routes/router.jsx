@@ -1,15 +1,16 @@
 import { createBrowserRouter} from "react-router";
 import Root from "../Layout/Root";
-import Home from "../pages/Home";
+import Home from "../pages/root/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ErrorPage from "../pages/ErrorPage";
-import Shop from "../pages/Shop";
-import SellerDashboard from "../Layout/Dashbord";
+import Shop from "../pages/root/Shop";
 import Dashboard from "../Layout/Dashbord";
-import AddProduct from "../pages/AddProduct";
-import Dash from "../pages/Dash";
+import AddProduct from "../pages/Dashboard/AddProduct";
+import Dash from "../pages/Dashboard/Dash";
 import UserRoute from "./privet_route/UserRoute";
+import BecomeSeller from "../pages/root/BecomeSeller";
+import ManageMedicines from "../pages/Dashboard/ManageMedicines";
 
 const router = createBrowserRouter([
     {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
         children : [
             {
                 index : true,
-                Component : Home,
+                element : <Home></Home>
             },
             {
                 path : "/shop",
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path : "/register",
                 Component : Register,
+            },
+            {
+                path : "/vendor-registration",
+                element : <UserRoute><BecomeSeller></BecomeSeller></UserRoute>
             },
 
         ]
@@ -49,7 +54,8 @@ const router = createBrowserRouter([
                 element : <AddProduct></AddProduct>
             },
             {
-
+                path : "/dashboard/manage-medicines",
+                element : <ManageMedicines></ManageMedicines>
             }
         ]
     }
