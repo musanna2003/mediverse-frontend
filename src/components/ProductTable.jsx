@@ -18,7 +18,7 @@ const ProductTable = ({ products, onSelect, onDelete, onEdit, role }) => {
 
   const confirmDelete = () => {
     if (deleteTarget) {
-      onDelete(deleteTarget);
+      onDelete(deleteTarget._id);
       setDeleteTarget(null);
     }
   };
