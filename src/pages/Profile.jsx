@@ -3,6 +3,7 @@ import axios from 'axios';
 import useAuth from '../Context/useAuth';
 import { FaEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import uploadToCloudinary from '../services/uploadToCloudinary';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -16,8 +17,8 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.post('http://localhost:3000/users/profile', {
-          email: user.email,
+        const res = await axios.get('http://localhost:3000/users/profile', {
+            params: { email: user.email },
         });
         setUserData(res.data);
       } catch (err) {
@@ -30,54 +31,48 @@ const Profile = () => {
     }
   }, [user]);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-    setPreviewImage(URL.createObjectURL(file));
-  };
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setSelectedFile(file);
+        setPreviewImage(URL.createObjectURL(file));
+    };
 
-  const handleUpdate = async () => {
-    document.getElementById('edit-modal').close();
-    try {
-      let updated = { ...userData };
+    const handleUpdate = async () => {
+        document.getElementById('edit-modal').close();
 
-      if (editField === 'photoURL' && selectedFile) {
-        // Upload image file to your image hosting here (e.g. Cloudinary, ImgBB, etc)
-        // For example, assuming you have an uploadToCloudinary helper:
+        try {
+            let updated = { ...userData };
 
-        const formData = new FormData();
-        formData.append('image', selectedFile);
+            if (editField === 'photoURL' && selectedFile) {
+            const imageUrl = await uploadToCloudinary(selectedFile);
 
-        const uploadRes = await axios.post(
-          'https://api.imgbb.com/1/upload?key=YOUR_IMGBB_API_KEY',
-          formData
-        );
-        const imageUrl = uploadRes.data?.data?.url;
-        if (!imageUrl) {
-          toast.error("Image upload failed");
-          return;
+            if (!imageUrl) {
+                toast.error("Image upload failed");
+                return;
+            }
+
+            updated.photoURL = imageUrl;
+            } else {
+            updated[editField] = editedValue;
+            }
+
+            const res = await axios.put('http://localhost:3000/users/update', updated);
+
+            if (res.data?.modifiedCount > 0) {
+            toast.success('Profile updated!');
+            setUserData(updated);
+            setEditField('');
+            setSelectedFile(null);
+            setPreviewImage(null);
+            } else {
+            toast.warn('No changes made.');
+            }
+        } catch (error) {
+            console.error('Update failed:', error);
+            toast.error('Failed to update!');
         }
-        updated.photoURL = imageUrl;
-      } else {
-        updated[editField] = editedValue;
-      }
+    };
 
-      const res = await axios.put('http://localhost:3000/users/update', updated);
-
-      if (res.data?.modifiedCount > 0) {
-        toast.success('Profile updated!');
-        setUserData(updated);
-        setEditField('');
-        setSelectedFile(null);
-        setPreviewImage(null);
-      } else {
-        toast.warn('No changes made.');
-      }
-    } catch (error) {
-      console.error('Update failed:', error);
-      toast.error('Failed to update!');
-    }
-  };
 
   if (!userData) return <p>Loading profile...</p>;
 

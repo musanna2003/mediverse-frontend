@@ -58,8 +58,9 @@ const Dashboard = () => {
           {/* Navigation Links */}
           <ul className="p-4 text-base-content">
             <li><Link to={"/dashboard"}>Dash Board</Link></li>
-            <li><Link to={"/dashboard/manage-medicines"}>Manage Medicines</Link></li>
+            <li><Link to={"/dashboard/manage-medicines"}>Manage Products</Link></li>
             <li><Link to={"/dashboard/addproduct"}>Add Product</Link></li>
+            <li><Link to={"/dashboard/manage-users"}>Manage Users</Link></li>
             <li><a href="#">My Products</a></li>
             <li><a href="#">Orders</a></li>
           </ul>

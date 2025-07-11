@@ -13,6 +13,7 @@ import BecomeSeller from "../pages/root/BecomeSeller";
 import ManageMedicines from "../pages/Dashboard/ManageMedicines";
 import EditProduct from "../pages/Dashboard/EditProduct";
 import Profile from "../pages/Profile";
+import ManageUsers from "../pages/Dashboard/ManageUsers";
 
 const router = createBrowserRouter([
     {
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
             {
                 path : "/dashboard/manage-medicines",
                 element : <ManageMedicines></ManageMedicines>
+            },
+            {
+                path : "/dashboard/manage-users",
+                element : <ManageUsers></ManageUsers>
             },
             
         ]
