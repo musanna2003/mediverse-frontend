@@ -12,6 +12,7 @@ import UserRoute from "./privet_route/UserRoute";
 import BecomeSeller from "../pages/root/BecomeSeller";
 import ManageMedicines from "../pages/Dashboard/ManageMedicines";
 import EditProduct from "../pages/Dashboard/EditProduct";
+import Profile from "../pages/Profile";
 
 const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
             {
                 path : "/register",
                 Component : Register,
+            },
+            {
+                path : "/profile",
+                Component : Profile,
             },
             {
                 path : "/vendor-registration",

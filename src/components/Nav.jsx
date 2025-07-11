@@ -4,6 +4,7 @@ import useAuth from '../Context/useAuth';
 
 const Nav = () => {
   const { user, signOutUser } = useAuth();
+  console.log(user)
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -71,6 +72,7 @@ const Nav = () => {
                 className=" bg-base-100 rounded-box  w-52 shadow-sm  menu dropdown-content mt-3 p-2  z-[999]"
               >
                 <li><span className="font-semibold">{user.displayName || "User"}</span></li>
+                <li><Link to={'/profile'}>Profile</Link></li>
                 <li><Link to={'/vendor-registration'}>Join as a Vendor</Link></li>
                 <li><button onClick={handleLogout}>Logout</button></li>
               </ul>

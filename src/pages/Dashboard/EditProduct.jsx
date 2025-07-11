@@ -32,35 +32,35 @@ const EditProduct = () => {
 
     const onSubmit = async (data) => {
         try {
-        let imageUrl = product.image;
+            let imageUrl = product.image;
 
-        if (data.image?.length > 0) {
-            imageUrl = await uploadToCloudinary(data.image[0]);
-        }
+            if (data.image?.length > 0) {
+                imageUrl = await uploadToCloudinary(data.image[0]);
+            }
 
-        const updatedProduct = {
-            name: data.name,
-            genericName: data.genericName,
-            category: data.category,
-            company: data.company,
-            quantity: parseInt(data.quantity),
-            unit: data.unit,
-            price: parseFloat(data.price),
-            discount: parseFloat(data.discount) || 0,
-            description: data.description,
-            image: imageUrl,
-            uploadDate: new Date().toISOString(),
-        };
+            const updatedProduct = {
+                name: data.name,
+                genericName: data.genericName,
+                category: data.category,
+                company: data.company,
+                quantity: parseInt(data.quantity),
+                unit: data.unit,
+                price: parseFloat(data.price),
+                discount: parseFloat(data.discount) || 0,
+                description: data.description,
+                image: imageUrl,
+                uploadDate: new Date().toISOString(),
+            };
 
-        const res = await axios.patch(`http://localhost:3000/products/${product._id}`, updatedProduct);
+            const res = await axios.patch(`http://localhost:3000/products/${product._id}`, updatedProduct);
 
-        if (res.data?.modifiedCount > 0) {
-            toast.success("Product updated successfully!");
-            navigate('/dashboard/manage-medicines'); // 🧭 Redirect to product list page
-            reset();
-        } else {
-            toast.error("Failed to update product.");
-        }
+            if (res.data?.modifiedCount > 0) {
+                toast.success("Product updated successfully!");
+                navigate('/dashboard/manage-medicines'); // 🧭 Redirect to product list page
+                reset();
+            } else {
+                toast.error("Failed to update product.");
+            }
 
         } catch (error) {
         console.error("Error updating product:", error);
