@@ -11,6 +11,7 @@ import Dash from "../pages/Dashboard/Dash";
 import UserRoute from "./privet_route/UserRoute";
 import BecomeSeller from "../pages/root/BecomeSeller";
 import ManageMedicines from "../pages/Dashboard/ManageMedicines";
+import EditProduct from "../pages/Dashboard/EditProduct";
 
 const router = createBrowserRouter([
     {
@@ -54,9 +55,15 @@ const router = createBrowserRouter([
                 element : <AddProduct></AddProduct>
             },
             {
+                path :"/dashboard/edit/:id",
+                loader : ({params}) => fetch(`http://localhost:3000/products/${params.id}`),
+                element: <EditProduct />
+            },
+            {
                 path : "/dashboard/manage-medicines",
                 element : <ManageMedicines></ManageMedicines>
-            }
+            },
+            
         ]
     }
 ]);

@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
+import { useNavigate } from 'react-router';
 
-const ProductTable = ({ products, onSelect, onDelete, onEdit, role }) => {
+const ProductTable = ({ products, onSelect, onDelete, role }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleEdit = (product) => {
+    navigate(`/dashboard/edit/${product._id}`,);
+  };
 
   const handleView = (product) => {
     setSelectedProduct(product);
@@ -59,7 +66,7 @@ const ProductTable = ({ products, onSelect, onDelete, onEdit, role }) => {
                     </button>
                   ) : (
                     <>
-                      <button onClick={() => onEdit(product)} className="btn btn-sm btn-outline btn-warning">
+                      <button onClick={() => handleEdit(product)} className="btn btn-sm btn-outline btn-warning">
                         <FaEdit />
                       </button>
                       <button onClick={() => handleDeletePrompt(product)} className="btn btn-sm btn-outline btn-error">
