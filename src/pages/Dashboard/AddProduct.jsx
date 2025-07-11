@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../Context/useAuth';
 import axios from 'axios';
 import uploadToCloudinary from '../../services/uploadToCloudinary';
+import { toast } from 'react-toastify';
 
 const categories = ['Pain Relief', 'Antibiotics', 'Vitamins', 'First Aid', 'Diabetes Care', 'Heart Care'];
 const companies = ['Square', 'Beximco', 'ACI', 'Renata', 'Incepta', 'ACME'];
@@ -43,6 +44,7 @@ const AddProduct = () => {
       try {
         const response = await axios.post('http://localhost:3000/products', productData);
         console.log("Saved to DB:", response.data);
+        toast.success("Upload Successful!");
       } catch (error) {
         console.error("Error saving to DB:", error);
       }
@@ -187,7 +189,7 @@ const AddProduct = () => {
         </div>
 
         {/* Discount */}
-        <div>
+        {/* <div>
           <label className="label">Discount % (optional)</label>
           <input
             type="number"
@@ -201,7 +203,7 @@ const AddProduct = () => {
             })}
           />
           {errors.discount && <p className="text-red-500 text-sm">{errors.discount.message}</p>}
-        </div>
+        </div> */}
 
         {/* Description */}
         <div>

@@ -94,7 +94,7 @@ const Shop = () => {
             </div>
 
             {/* 🧾 Product Table */}
-            <ProductTable products={data} />
+            <ProductTable products={data} role={"user"} />
         </div>
     );
 };

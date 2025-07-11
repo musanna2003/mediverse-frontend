@@ -23,7 +23,7 @@ const ManageMedicines = () => {
     return (
         <div>
             {/* 🧾 Product Table */}
-            <ProductTable products={data} />
+            <ProductTable products={data} role={"seller"} />
         </div>
     );
 };

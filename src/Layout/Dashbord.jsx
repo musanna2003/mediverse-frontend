@@ -1,14 +1,12 @@
 import React from 'react';
 import { FaBars } from 'react-icons/fa';
 import { Link, Outlet } from 'react-router';
+import useAuth from '../Context/useAuth';
+import { FaHome } from "react-icons/fa";
 
 const Dashboard = () => {
   //TODO
-  const user = {
-    name: "Musanna",
-    email: "musanna@example.com",
-    photoURL: "https://img.daisyui.com/images/profile/demo/spiderperson@192.webp", // sample avatar
-  };
+  const {user} = useAuth();
 
   return (
     <div className="drawer md:drawer-open min-h-screen">
@@ -20,9 +18,16 @@ const Dashboard = () => {
         {/* Navbar (mobile only) */}
         <div className="w-full bg-base-200 p-4 flex items-center justify-between md:hidden">
           <h2 className="text-xl font-bold">Seller Dashboard</h2>
-          <label htmlFor="dashboard-drawer" className="btn btn-ghost">
-            <FaBars className="text-xl" />
-          </label>
+          <div className="flex justify-center items-center">
+            <div className="tooltip tooltip-bottom" data-tip="Home">
+              <Link to="/" className="btn btn-ghost text-xl flex items-center justify-start gap-2">
+                <FaHome />
+              </Link>
+            </div>
+            <label htmlFor="dashboard-drawer" className="btn btn-ghost">
+              <FaBars className="text-xl" />
+            </label>
+          </div>
         </div>
 
         {/* Main content goes here */}
@@ -36,18 +41,22 @@ const Dashboard = () => {
         <label htmlFor="dashboard-drawer" className="drawer-overlay md:hidden"></label>
         
         <div className="min-h-screen menu bg-base-200 w-64">
+          <div className="tooltip tooltip-bottom hidden md:flex" data-tip="Home">
+            <Link to="/" className="btn btn-ghost text-xl flex items-center justify-start gap-2">
+              <FaHome />
+            </Link>
+          </div>
           {/* User Profile */}
           <div className="p-4 border-b border-base-300 flex flex-col items-center text-center">
             <div className="w-20 h-20 rounded-full overflow-hidden">
-              <img src={user.photoURL} alt="User Avatar" className="w-[100%] rounded object-cover" />
+              <img src={user?.photoURL} alt="User Avatar" className="w-[100%] rounded object-cover" />
             </div>
-            <h3 className="mt-3 font-semibold text-lg">{user.name}</h3>
-            <p className="text-sm text-gray-500">{user.email}</p>
+            <h3 className="mt-3 font-semibold text-lg">{user?.name}</h3>
+            <p className="text-sm text-gray-500">{user?.email}</p>
           </div>
 
           {/* Navigation Links */}
           <ul className="p-4 text-base-content">
-            <li><Link to={"/"}>Home</Link></li>
             <li><Link to={"/dashboard"}>Dash Board</Link></li>
             <li><Link to={"/dashboard/manage-medicines"}>Manage Medicines</Link></li>
             <li><Link to={"/dashboard/addproduct"}>Add Product</Link></li>
