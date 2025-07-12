@@ -3,6 +3,7 @@ import { FaBars } from 'react-icons/fa';
 import { Link, Outlet } from 'react-router';
 import useAuth from '../Context/useAuth';
 import { FaHome } from "react-icons/fa";
+import { ToastContainer } from 'react-toastify';
 
 const Dashboard = () => {
   //TODO
@@ -67,6 +68,7 @@ const Dashboard = () => {
           </ul>
         </div>
       </div>
+      <ToastContainer />
 
     </div>
   );

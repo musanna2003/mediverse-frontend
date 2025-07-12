@@ -14,6 +14,8 @@ import ManageMedicines from "../pages/Dashboard/ManageMedicines";
 import EditProduct from "../pages/Dashboard/EditProduct";
 import Profile from "../pages/Profile";
 import ManageUsers from "../pages/Dashboard/ManageUsers";
+import SellerList from "../pages/Dashboard/SellerList";
+import SellerReq from "../pages/Dashboard/SellerReq";
 
 const router = createBrowserRouter([
     {
@@ -72,6 +74,14 @@ const router = createBrowserRouter([
             {
                 path : "/dashboard/manage-users",
                 element : <ManageUsers></ManageUsers>
+            },
+            {
+                path : "/dashboard/seller-list",
+                element : <SellerList></SellerList>
+            },
+            {
+                path : "/dashboard/seller-req",
+                element : <SellerReq></SellerReq>
             },
             
         ]
