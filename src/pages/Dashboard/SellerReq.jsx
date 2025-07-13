@@ -24,7 +24,11 @@ const SellerReq = () => {
         email: selectedSeller.email,
         state: 'approved',
       });
-      if (res.data.modifiedCount > 0) {
+      const res2 = await axios.put('http://localhost:3000/users/update', {
+                email : selectedSeller.email ,
+                role: "seller",
+            });
+      if (res.data.success && res2.data) {
         toast.success('Seller approved!');
         queryClient.invalidateQueries(['pendingSellers']);
         closeModal();
@@ -37,7 +41,7 @@ const SellerReq = () => {
   const handleReject = async () => {
     try {
       const res = await axios.delete(`http://localhost:3000/seller/${selectedSeller.email}`);
-      if (res.data.deletedCount > 0) {
+      if (res.data?.success) {
         toast.success('Seller request removed');
         queryClient.invalidateQueries(['pendingSellers']);
         closeModal();

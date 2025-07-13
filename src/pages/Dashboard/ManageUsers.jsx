@@ -22,19 +22,34 @@ const ManageUsers = () => {
         queryFn: () => fetchUsersByRole(role),
     });
   // 🔁 Update role
-    const updateRole = async (email, newRole) => {
+    const updateRole = async (user, newRole) => {
         try {
-        const res = await axios.put('http://localhost:3000/users/update', {
-            email,
-            role: newRole,
-        });
+            const res = await axios.put('http://localhost:3000/users/update', {
+                email : user.email,
+                role: newRole,
+            });
+            if (newRole === "seller"){
+                const sellerData = {
+                    name: user.name || "N/A",
+                    email: user.email,
+                    phone: data.phone || "N/A",
+                    storeName: data.storeName || "N/A",
+                    nidNumber: data.nidNumber || "N/A",
+                    licenseNumber: data.licenseNumber || "N/A",
+                    address: data.address || "N/A",
+                    state: 'approved',
+                    createdAt: new Date().toISOString(),
+                };
+                const res2 = await axios.post('http://localhost:3000/sellers', sellerData);
+                console.log(res2.data)
+            }
 
-        if (res.data.modifiedCount > 0) {
-            toast.success(`Role updated to ${newRole}`);
-            queryClient.invalidateQueries(['users', role]); // Refresh the list
-        } else {
-            toast.error('No user updated');
-        }
+            if (res.data.modifiedCount > 0) {
+                toast.success(`Role updated to ${newRole}`);
+                queryClient.invalidateQueries(['users', role]); // Refresh the list
+            } else {
+                toast.error('No user updated');
+            }
         } catch (err) {
         console.error('Role update failed:', err);
         toast.error('Failed to update role');
@@ -69,7 +84,7 @@ const ManageUsers = () => {
                     {user.role !== 'seller' && (
                         <button
                         className="btn btn-sm btn-success"
-                        onClick={() => updateRole(user.email, 'seller')}
+                        onClick={() => updateRole(user, 'seller')}
                         >
                         <FaUserTie className="mr-1" /> Make Seller
                         </button>
@@ -77,9 +92,17 @@ const ManageUsers = () => {
                     {user.role !== 'admin' && (
                         <button
                         className="btn btn-sm btn-warning"
-                        onClick={() => updateRole(user.email, 'admin')}
+                        onClick={() => updateRole(user, 'admin')}
                         >
                         <FaUserShield className="mr-1" /> Make Admin
+                        </button>
+                    )}
+                    {user.role === 'admin' && (
+                        <button
+                        className="btn btn-sm btn-error"
+                        onClick={() => updateRole(user, 'user')}
+                        >
+                        <FaUserShield className="mr-1" /> Remove Admin
                         </button>
                     )}
                     </td>

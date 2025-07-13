@@ -15,7 +15,7 @@ const fetchSellers = async (state) => {
 
 const SellerList = () => {
 
-    const state = "pending"
+    const state = "approved"
     const queryClient = useQueryClient();
     const [selectedSeller, setSelectedSeller] = useState(null);
 
@@ -29,7 +29,11 @@ const SellerList = () => {
 
         try {
         const res = await axios.delete(`http://localhost:3000/seller/${selectedSeller.email}`);
-        console.log(res.data.success)
+        const res2 = await axios.put('http://localhost:3000/users/update', {
+                email : selectedSeller.email ,
+                role: "user",
+            });
+        console.log(res.data.success && res2.data)
         if (res.data?.success) {
             toast.success(`${selectedSeller.name} removed from sellers.`);
             queryClient.invalidateQueries(['sellers']);
