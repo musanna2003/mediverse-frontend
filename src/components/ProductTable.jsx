@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import useAuth from '../Context/useAuth';
 import { toast } from 'react-toastify';
 
+
 const ProductTable = ({ products, onDelete, role }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
