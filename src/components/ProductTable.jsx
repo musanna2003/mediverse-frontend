@@ -1,13 +1,17 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 import { useNavigate } from 'react-router';
+import useAuth from '../Context/useAuth';
+import { toast } from 'react-toastify';
 
-const ProductTable = ({ products, onSelect, onDelete, role }) => {
+const ProductTable = ({ products, onDelete, role }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const navigate = useNavigate();
+  const {user} = useAuth();
 
   const handleEdit = (product) => {
     navigate(`/dashboard/edit/${product._id}`,);
@@ -27,6 +31,21 @@ const ProductTable = ({ products, onSelect, onDelete, role }) => {
     if (deleteTarget) {
       onDelete(deleteTarget._id);
       setDeleteTarget(null);
+    }
+  };
+
+  const addToCart = async (email, p_id, qty = 1) => {
+    try {
+      const res = await axios.post('http://localhost:3000/cart', {
+        email,
+        p_id,
+        qty
+      });
+      console.log('✅ Added to cart:', res.data);
+      toast.success('✅ Added to cart:', res.data)
+    } catch (error) {
+      console.error('❌ Failed to add to cart:', error);
+      toast.error('❌ Failed to add to cart:', error);
     }
   };
 
@@ -61,7 +80,7 @@ const ProductTable = ({ products, onSelect, onDelete, role }) => {
                     <FaEye />
                   </button>
                   {role === 'user' ? (
-                    <button onClick={() => onSelect(product)} className="btn btn-sm btn-outline btn-primary">
+                    <button onClick={() => addToCart(user?.email, product._id)} className="btn btn-sm btn-outline btn-primary">
                       <FaCartShopping />
                     </button>
                   ) : (

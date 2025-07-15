@@ -16,6 +16,7 @@ import Profile from "../pages/Profile";
 import ManageUsers from "../pages/Dashboard/ManageUsers";
 import SellerList from "../pages/Dashboard/SellerList";
 import SellerReq from "../pages/Dashboard/SellerReq";
+import CartPage from "../pages/root/CartPage";
 
 const router = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
             {
                 path : "/profile",
                 Component : Profile,
+            },
+            {
+                path : "/cart",
+                Component : CartPage,
             },
             {
                 path : "/vendor-registration",

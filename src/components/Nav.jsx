@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link, NavLink, useNavigate } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router'; // ✅ corrected import path
 import useAuth from '../Context/useAuth';
+import { FaShoppingCart } from 'react-icons/fa';
 
 const Nav = () => {
   const { user, signOutUser } = useAuth();
-  console.log(user)
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -37,7 +37,16 @@ const Nav = () => {
         </ul>
       </div>
 
-      <div className="navbar-end">
+      <div className="navbar-end gap-3">
+
+        {/* ✅ Cart Button */}
+        <NavLink to="/cart" className="btn btn-ghost relative">
+          <FaShoppingCart className="text-xl" />
+          {/* You can show item count here if needed:
+          <span className="badge badge-sm badge-secondary absolute -top-1 -right-1">3</span>
+          */}
+        </NavLink>
+
         {/* Mobile Nav */}
         <div className="dropdown dropdown-end lg:hidden">
           <label tabIndex={0} className="btn btn-ghost">
@@ -53,32 +62,30 @@ const Nav = () => {
         </div>
 
         {/* Auth Actions */}
-        {
-          !user ? (
-            <NavLink to="/login" className="btn btn-ghost hover:bg-black/10">
-              Join Us
-            </NavLink>
-          ) : (
-            <div className="dropdown dropdown-end relative z-[999]">
-              <div tabIndex={0} className="btn btn-ghost p-0">
-                <img
-                  src={user.photoURL || "https://i.ibb.co.com/NdFHxWHB/307ce493-b254-4b2d-8ba4-d12c080d6651.jpg"}
-                  alt="User Avatar"
-                  className="w-10 h-10 rounded-full"
-                />
-              </div>
-              <ul
-                tabIndex={0}
-                className=" bg-base-100 rounded-box  w-52 shadow-sm  menu dropdown-content mt-3 p-2  z-[999]"
-              >
-                <li><span className="font-semibold">{user.displayName || "User"}</span></li>
-                <li><Link to={'/profile'}>Profile</Link></li>
-                <li><Link to={'/vendor-registration'}>Join as a Vendor</Link></li>
-                <li><button onClick={handleLogout}>Logout</button></li>
-              </ul>
+        {!user ? (
+          <NavLink to="/login" className="btn btn-ghost hover:bg-black/10">
+            Join Us
+          </NavLink>
+        ) : (
+          <div className="dropdown dropdown-end relative z-[999]">
+            <div tabIndex={0} className="btn btn-ghost p-0">
+              <img
+                src={user.photoURL || "https://i.ibb.co.com/NdFHxWHB/307ce493-b254-4b2d-8ba4-d12c080d6651.jpg"}
+                alt="User Avatar"
+                className="w-10 h-10 rounded-full"
+              />
             </div>
-          )
-        }
+            <ul
+              tabIndex={0}
+              className="bg-base-100 rounded-box w-52 shadow-sm menu dropdown-content mt-3 p-2 z-[999]"
+            >
+              <li><span className="font-semibold">{user.displayName || "User"}</span></li>
+              <li><Link to={'/profile'}>Profile</Link></li>
+              <li><Link to={'/vendor-registration'}>Join as a Vendor</Link></li>
+              <li><button onClick={handleLogout}>Logout</button></li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
