@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPlus, FaMinus, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import useAuth from '../../Context/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+
 const fetchCartItems = async (email) => {
   const res = await axios.get('http://localhost:3000/cart', {
     params: { email },
@@ -13,42 +14,100 @@ const fetchCartItems = async (email) => {
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const {user} = useAuth();
- 
-  const { data: cartItems, isLoading, isError } = useQuery({
-        queryKey: ['cartItems', user?.email],
-        queryFn: () => fetchCartItems(user.email),
+  const { user } = useAuth();
+
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [quantities, setQuantities] = useState({});
+
+  const { data: cartItems = [], isLoading, isError, refetch, } = useQuery({
+    queryKey: ['cartItems', user?.email],
+    queryFn: () => fetchCartItems(user.email),
+    enabled: !!user?.email,
   });
-  console.log(user.email)
 
-  console.log(cartItems)
-  
+  // Initialize quantities when cart items load
+  useEffect(() => {
+    if (cartItems.length) {
+      const initial = {};
+      cartItems.forEach(item => {
+        initial[item._id] = item.qty || 1;
+      });
+      setQuantities(initial);
+    }
+  }, [cartItems]);
 
+  const handleSelect = (id) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
 
-  const removeItem = (id) =>{
-    console.log(id);
-  }
-
-  const clearCart = () =>{
-
-  }
-
-  const setQty = (a) =>{
-    console.log(a);
-  }
-
+  const setQty = (id, change) => {
+    setQuantities(prev => {
+      const newQty = Math.max(1, (prev[id] || 1) + change); // Prevent going below 1
+      return { ...prev, [id]: newQty };
+    });
+  };
 
   const getTotal = () => {
-    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    return cartItems
+      .filter(item => selectedIds.includes(item._id))
+      .reduce((sum, item) => {
+        const qty = quantities[item._id] || item.qty;
+        return sum + item.price * qty;
+      }, 0);
   };
-  if (isLoading) return <p>Loading sellers...</p>;
-  if (isError) return <p>Failed to load sellers.</p>;
+
+  const handleCheckout = () => {
+    const selectedItems = cartItems
+      .filter(item => selectedIds.includes(item._id))
+      .map(item => ({
+        ...item,
+        qty: quantities[item._id] || item.qty,
+      }));
+
+    navigate('/checkout', { state: { items: selectedItems } });
+  };
+
+  const removeItem = async (id) => {
+    try {
+      await axios.delete('http://localhost:3000/cart', {
+        params: {
+          email: user.email,
+          productId: id,
+        },
+      });
+      // refetch cart data
+      refetch();
+    } catch (err) {
+      console.error('Error deleting item:', err);
+    }
+  };
+
+
+  const clearCart = async () => {
+    try {
+      await axios.delete('http://localhost:3000/cart', {
+        params: {
+          email: user.email,
+        },
+      });
+      // refetch cart data
+      refetch();
+    } catch (err) {
+      console.error('Error clearing cart:', err);
+    }
+  };
+
+
+  if (isLoading) return <p>Loading cart items...</p>;
+  if (isError) return <p>Failed to load cart items.</p>;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <h2 className="text-3xl font-bold mb-6">Your Cart</h2>
 
-      {cartItems?.length === 0 ? (
+      {cartItems.length === 0 ? (
         <div className="text-center text-gray-500">Your cart is empty.</div>
       ) : (
         <>
@@ -57,6 +116,7 @@ const CartPage = () => {
               <thead>
                 <tr className="bg-base-200">
                   <th>#</th>
+                  <th>Select</th>
                   <th>Image</th>
                   <th>Name</th>
                   <th>Company</th>
@@ -71,23 +131,44 @@ const CartPage = () => {
                   <tr key={item._id || idx}>
                     <td>{idx + 1}</td>
                     <td>
-                      <img src={item.image} alt={item.name} className="w-12 h-12 rounded" />
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.includes(item._id)}
+                        onChange={() => handleSelect(item._id)}
+                        className="checkbox checkbox-sm"
+                      />
+                    </td>
+                    <td>
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-12 h-12 rounded"
+                      />
                     </td>
                     <td>{item.name}</td>
                     <td>{item.company}</td>
                     <td>{item.price}</td>
                     <td className="flex items-center gap-2">
-                      <button onClick={() => setQty(-1)} className="btn btn-sm btn-outline btn-circle">
+                      <button
+                        onClick={() => setQty(item._id, -1)}
+                        className="btn btn-sm btn-outline btn-circle"
+                      >
                         <FaMinus />
                       </button>
-                      <span>{item.quantity}</span>
-                      <button onClick={() => setQty(1)} className="btn btn-sm btn-outline btn-circle">
+                      <span>{quantities[item._id] || item.qty}</span>
+                      <button
+                        onClick={() => setQty(item._id, 1)}
+                        className="btn btn-sm btn-outline btn-circle"
+                      >
                         <FaPlus />
                       </button>
                     </td>
-                    <td>{item.price * item.quantity}</td>
+                    <td>{item.price * (quantities[item._id] || item.qty)}</td>
                     <td>
-                      <button onClick={() => removeItem(item._id)} className="btn btn-sm btn-outline btn-error">
+                      <button
+                        onClick={() => removeItem(item._id)}
+                        className="btn btn-sm btn-outline btn-error"
+                      >
                         <FaTrash />
                       </button>
                     </td>
@@ -100,11 +181,21 @@ const CartPage = () => {
           {/* Cart Summary */}
           <div className="mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
-              <p className="text-lg font-semibold">Total: ৳{getTotal()}</p>
+              <p className="text-lg font-semibold">
+                Total: ৳{getTotal().toFixed(2)}
+              </p>
             </div>
             <div className="flex gap-4">
-              <button onClick={clearCart} className="btn btn-outline btn-error">Clear Cart</button>
-              <button onClick={() => navigate('/checkout')} className="btn btn-primary">Checkout</button>
+              <button onClick={clearCart} className="btn btn-outline btn-error">
+                Clear Cart
+              </button>
+              <button
+                onClick={handleCheckout}
+                className="btn btn-primary"
+                disabled={selectedIds.length === 0}
+              >
+                Checkout
+              </button>
             </div>
           </div>
         </>
@@ -114,3 +205,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
