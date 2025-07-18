@@ -17,6 +17,8 @@ import ManageUsers from "../pages/Dashboard/ManageUsers";
 import SellerList from "../pages/Dashboard/SellerList";
 import SellerReq from "../pages/Dashboard/SellerReq";
 import CartPage from "../pages/root/CartPage";
+import CheckoutPage from "../pages/root/CheckoutPage";
+import InvoicePage from "../pages/root/InvoicePage";
 
 const router = createBrowserRouter([
     {
@@ -51,6 +53,14 @@ const router = createBrowserRouter([
             {
                 path : "/vendor-registration",
                 element : <UserRoute><BecomeSeller></BecomeSeller></UserRoute>
+            },
+            {
+                path : "/checkout",
+                element : <CheckoutPage></CheckoutPage>
+            },
+            {
+                path : "/invoice",
+                element : <InvoicePage></InvoicePage>
             },
 
         ]
