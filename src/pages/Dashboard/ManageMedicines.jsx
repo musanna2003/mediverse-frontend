@@ -3,12 +3,14 @@ import ProductTable from '../../components/ProductTable';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import useAuth from '../../Context/useAuth';
 
 const ManageMedicines = () => {
     const queryClient = useQueryClient();
+    const {user} = useAuth();
 
     const fetchMedicines = async () => {
-        const params = { sellerEmail: "john@email.com" };
+        const params = { sellerEmail: user.email};
         const res = await axios.get('http://localhost:3000/products', { params });
         return res.data;
     };

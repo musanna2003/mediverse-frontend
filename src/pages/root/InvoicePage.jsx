@@ -67,7 +67,7 @@ const InvoicePage = () => {
       <div className="text-center mt-8 print:hidden">
         <button
           onClick={handlePrint}
-          className=" hover:bg-blue-700 text-white px-6 py-2 rounded shadow"
+          className=" btn btn-primary"
         >
           Print Invoice
         </button>
