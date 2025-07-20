@@ -19,6 +19,8 @@ import SellerReq from "../pages/Dashboard/SellerReq";
 import CartPage from "../pages/root/CartPage";
 import CheckoutPage from "../pages/root/CheckoutPage";
 import InvoicePage from "../pages/root/InvoicePage";
+import AdminPayments from "../pages/Dashboard/AdminPayments";
+import AdminSalesReport from "../pages/Dashboard/AdminSalesReport";
 
 const router = createBrowserRouter([
     {
@@ -97,6 +99,14 @@ const router = createBrowserRouter([
             {
                 path : "/dashboard/seller-req",
                 element : <SellerReq></SellerReq>
+            },
+            {
+                path : "/dashboard/payment-management",
+                element : <AdminPayments></AdminPayments>
+            },
+            {
+                path : "/dashboard/sales-report",
+                element : <AdminSalesReport></AdminSalesReport>
             },
             
         ]

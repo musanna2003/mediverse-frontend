@@ -1,15 +1,30 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import useAuth from '../../Context/useAuth';
 
 const InvoicePage = () => {
   const location = useLocation();
   const { cartItems, totalAmount, paymentId } = location.state || {};
+  const {user} = useAuth();
+  console.log(user.email)
 
-  const user = {
-    name: 'Customer Name', // Replace with actual user info
-    email: 'customer@example.com',
-    address: '123 Street, City, Country',
-  };
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    if (user?.email) {
+      axios
+        .get('http://localhost:3000/users/profile', {
+          params: { email: user.email },
+        })
+        .then((res) => {
+          setUserInfo(res.data);
+        })
+        .catch((err) => {
+          console.error('Failed to fetch user info:', err);
+        });
+    }
+  }, [user?.email]);
 
   const handlePrint = () => {
     window.print();
@@ -19,16 +34,16 @@ const InvoicePage = () => {
     <div className="max-w-3xl mx-auto p-6 border rounded shadow print:p-0 print:shadow-none print:border-none">
       {/* Logo & Title */}
       <div className="flex items-center justify-between mb-6 border-b pb-4">
-        <img src="/logo.png" alt="Website Logo" className="h-12" /> {/* Replace with your logo path */}
+        <img src="/logo.png" alt="Website Logo" className="h-12" />
         <h1 className="text-2xl font-bold">Invoice</h1>
       </div>
 
       {/* User Info */}
       <div className="mb-6">
         <h2 className="font-semibold text-lg mb-2">Billed To:</h2>
-        <p>{user.name}</p>
-        <p>{user.email}</p>
-        <p>{user.address}</p>
+        <p>Name: {userInfo?.name }</p>
+        <p>Email: {userInfo?.email }</p>
+        <p>Address: {userInfo?.address }</p>
       </div>
 
       {/* Payment Info */}
@@ -40,7 +55,7 @@ const InvoicePage = () => {
       {/* Product Table */}
       <table className="w-full border border-gray-300 mb-6">
         <thead>
-          <tr className="">
+          <tr>
             <th className="border p-2 text-left">Medicine Name</th>
             <th className="border p-2">Qty</th>
             <th className="border p-2">Unit Price</th>
@@ -67,7 +82,7 @@ const InvoicePage = () => {
       <div className="text-center mt-8 print:hidden">
         <button
           onClick={handlePrint}
-          className=" btn btn-primary"
+          className="btn btn-primary"
         >
           Print Invoice
         </button>
