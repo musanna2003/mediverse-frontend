@@ -21,6 +21,8 @@ import CheckoutPage from "../pages/root/CheckoutPage";
 import InvoicePage from "../pages/root/InvoicePage";
 import AdminPayments from "../pages/Dashboard/AdminPayments";
 import AdminSalesReport from "../pages/Dashboard/AdminSalesReport";
+import SellerPaymentHistory from "../pages/Dashboard/SellerPaymentHistory";
+import UserPaymentHistory from "../pages/Dashboard/UserPaymentHistory";
 
 const router = createBrowserRouter([
     {
@@ -107,6 +109,14 @@ const router = createBrowserRouter([
             {
                 path : "/dashboard/sales-report",
                 element : <AdminSalesReport></AdminSalesReport>
+            },
+            {
+                path : "/dashboard/seller-payment",
+                element : <SellerPaymentHistory></SellerPaymentHistory>
+            },
+            {
+                path : "/dashboard/user-payments",
+                element : <UserPaymentHistory></UserPaymentHistory>
             },
             
         ]
