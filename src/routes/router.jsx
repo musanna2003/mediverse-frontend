@@ -23,6 +23,7 @@ import AdminPayments from "../pages/Dashboard/AdminPayments";
 import AdminSalesReport from "../pages/Dashboard/AdminSalesReport";
 import SellerPaymentHistory from "../pages/Dashboard/SellerPaymentHistory";
 import UserPaymentHistory from "../pages/Dashboard/UserPaymentHistory";
+import OfferAdvertiseManager from "../pages/Dashboard/OfferAdvertiseManager";
 
 const router = createBrowserRouter([
     {
@@ -117,6 +118,10 @@ const router = createBrowserRouter([
             {
                 path : "/dashboard/user-payments",
                 element : <UserPaymentHistory></UserPaymentHistory>
+            },
+            {
+                path : "/dashboard/offer-req",
+                element : <OfferAdvertiseManager></OfferAdvertiseManager>
             },
             
         ]

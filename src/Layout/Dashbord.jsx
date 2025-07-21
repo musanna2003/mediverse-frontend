@@ -68,6 +68,7 @@ const Dashboard = () => {
             <li><Link to={"/dashboard/sales-report"}>Sales Report</Link></li>
             <li><Link to={"/dashboard/seller-payment"}>Payment history(seller)</Link></li>
             <li><Link to={"/dashboard/user-payments"}>Payment history(user)</Link></li>
+            <li><Link to={"/dashboard/offer-req"}>Ask For Advertisement</Link></li>
             
           </ul>
         </div>
