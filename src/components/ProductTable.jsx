@@ -72,7 +72,11 @@ const ProductTable = ({ products, onDelete, role }) => {
                 <td>
                   <img src={product.image} alt={product.name} className="w-12 h-12 rounded" />
                 </td>
-                <td>{product.name}</td>
+                <td>
+                  {product.name.length > 15
+                    ? product.name.slice(0, 15) + '...'
+                    : product.name}
+                </td>
                 <td>{product.category || 'N/A'}</td>
                 <td>{product.price}</td>
                 <td>{product.stock || 'Available'}</td>

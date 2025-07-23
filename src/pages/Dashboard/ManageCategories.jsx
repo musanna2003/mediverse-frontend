@@ -49,9 +49,9 @@ const ManageCategories = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (name) => {
     try {
-      await axios.delete(`http://localhost:3000/admin/categories/${id}`);
+      await axios.delete(`http://localhost:3000/admin/categories/${name}`);
       toast.success('Category deleted');
       queryClient.invalidateQueries(['categories']);
     } catch {
@@ -84,7 +84,7 @@ const ManageCategories = () => {
         </thead>
         <tbody>
           {categories.map((cat) => (
-            <tr key={cat._id}>
+            <tr key={cat.name}>
               <td>
                 <img src={cat.image} className="w-12 h-12 rounded" alt={cat.name} />
               </td>
@@ -95,7 +95,7 @@ const ManageCategories = () => {
                 </button>
                 <button
                   className="btn btn-sm btn-error"
-                  onClick={() => handleDelete(cat._id)}
+                  onClick={() => handleDelete(cat.name)}
                 >
                   <FaTrash />
                 </button>

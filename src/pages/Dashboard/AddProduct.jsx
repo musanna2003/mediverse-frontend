@@ -1,19 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../Context/useAuth';
 import axios from 'axios';
 import uploadToCloudinary from '../../services/uploadToCloudinary';
 import { toast } from 'react-toastify';
 
-const categories = ['Pain Relief', 'Antibiotics', 'Vitamins', 'First Aid', 'Diabetes Care', 'Heart Care'];
 const companies = ['Square', 'Beximco', 'ACI', 'Renata', 'Incepta', 'ACME'];
-const units = ['mg', 'ml'];
+const units = ['mg', 'ml','g','pc'];
 
 
 const AddProduct = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [preview, setPreview] = useState(null);
   const { user } = useAuth();
+
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  
+  useEffect(() => {
+    axios.get('http://localhost:3000/admin/categories')
+      .then((res) => {
+        setCategories(res.data || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching categories:', err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-10">Loading categories...</div>;
+  }
 
 
   const onSubmit = async (data) => {
@@ -118,10 +137,13 @@ const AddProduct = () => {
             {...register('category', { required: 'Category is required' })}
           >
             <option value="" disabled>Select category</option>
-            {categories.map((cat, idx) => (
-              <option key={idx} value={cat}>{cat}</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat.name}>
+                {cat.name}
+              </option>
             ))}
           </select>
+
           {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
         </div>
 

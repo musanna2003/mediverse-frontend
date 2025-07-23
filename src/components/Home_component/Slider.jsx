@@ -9,15 +9,45 @@ import 'swiper/css/navigation';
 
 
 // import required modules
-import { Navigation } from 'swiper/modules';
+import { Autoplay, Navigation } from 'swiper/modules';
+import { useQuery,  } from '@tanstack/react-query';
+import axios from 'axios';
+import Hero from './Hero';
 
 const Slider = () => {
+
+
+    const { data: ads = [], isLoading } = useQuery({
+        queryKey: ['banner-ads'],
+        queryFn: async () => {
+        const res = await axios.get('http://localhost:3000/admin/offer-requests');
+        console.log(res.data)
+        return res.data;
+        
+        }
+    });
+    
+    if (isLoading) return <div>Loading...</div>;
+
     return (
-        <Swiper navigation={true} modules={[Navigation]} className="z-0">
+        <Swiper navigation={true}
+        modules={[Navigation, Autoplay]} // include Autoplay
+        loop={true} // for infinite scroll
+        autoplay={{
+            delay: 3000, // time in ms between slides (3 seconds)
+            disableOnInteraction: false,
+        }}
+        className="z-0">
             <SwiperSlide><img className=' w-full max-h-[95vh]' src="https://images.pexels.com/photos/208512/pexels-photo-208512.jpeg " alt="" /></SwiperSlide>
-            <SwiperSlide>Slide 2</SwiperSlide>
-            <SwiperSlide>Slide 3</SwiperSlide>
-            <SwiperSlide>Slide 4</SwiperSlide>
+            {
+                ads
+                    .filter(ad => ad.isActive) // ✅ Only include ads where isActive === true
+                    .map((ad, index) => (
+                        <SwiperSlide key={index}>
+                            <Hero img={ad.image} txt={ad.description} />
+                        </SwiperSlide>
+                    ))
+            }
         </Swiper>
     );
 };
