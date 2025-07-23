@@ -1,16 +1,28 @@
 import ProductTable from '../../components/ProductTable';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaSortAmountDownAlt } from 'react-icons/fa';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { useLocation } from 'react-router';
 
 const Shop = () => {
 
+    const location = useLocation();
+    const cat = location.state?.category || 'All'; // default fallback
     const [searchTerm, setSearchTerm] = useState('');
     const [sortOrder, setSortOrder] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
-    console.log(sortOrder)
-    
+    const [selectedCategory, setSelectedCategory] = useState(cat);
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+    axios.get('http://localhost:3000/admin/categories')
+      .then((res) => {
+        setCategories(res.data || []);
+      })
+      .catch((err) => {
+        console.error('Error fetching categories:', err);
+      });
+  }, []);
 
     //functions
 
@@ -34,7 +46,7 @@ const Shop = () => {
     if (isLoading) return <p>Loading...</p>;
     if (isError) return <p>Something went wrong!</p>;
 
-    const categories = ['All', ...new Set(data.map(p => p.category || 'Unknown'))];
+
 
 
    
@@ -66,14 +78,17 @@ const Shop = () => {
 
 
                 {/* Category dropdown */}
-                <select
-                className="select select-bordered w-full md:max-w-xs"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                >
-                {categories.map((cat, idx) => (
-                    <option key={idx} value={cat}>{cat}</option>
-                ))}
+               <select
+                    className="select select-bordered w-full md:max-w-xs"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                    <option value="All">All Categories</option>
+                    {categories.map((cat, idx) => (
+                        <option key={cat._id || idx} value={cat.name}>
+                        {cat.name}
+                        </option>
+                    ))}
                 </select>
 
                 {/* Sort dropdown */}
@@ -94,7 +109,7 @@ const Shop = () => {
             </div>
 
             {/* 🧾 Product Table */}
-            <ProductTable products={data} role={"user"} />
+            <ProductTable products={data} cat={cat} role={"user"} />
         </div>
     );
 };

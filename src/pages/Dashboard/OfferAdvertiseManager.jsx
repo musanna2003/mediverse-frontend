@@ -1,23 +1,37 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FaBullhorn } from 'react-icons/fa';
+import useAuth from '../../Context/useAuth';
+import uploadToCloudinary from '../../services/uploadToCloudinary';
+import { toast } from 'react-toastify';
 
 const OfferAdvertiseManager = ({ sellerEmail }) => {
-  const [products, setProducts] = useState([]);
+  const { user } = useAuth();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [offerPercentage, setOfferPercentage] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
   const dialogRef = useRef(null);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (sellerEmail) {
-      axios
-        .get(`/products/seller?sellerEmail=${sellerEmail}`)
-        .then((res) => setProducts(res.data))
-        .catch((err) => console.error(err));
-    }
-  }, [sellerEmail]);
+  const fetchSellerProducts = async () => {
+    const params = { sellerEmail: user.email };
+    const res = await axios.get('http://localhost:3000/products', { params });
+    return res.data;
+  };
+
+  const {
+    data: products = [],
+    isLoading,
+    isError,
+    // refetch,
+  } = useQuery({
+    queryKey: ['products', user.email],
+    queryFn: fetchSellerProducts,
+    enabled: !!user?.email,
+  });
 
   const offered = products.filter((p) => p.discount > 0);
   const normal = products.filter((p) => p.discount === 0);
@@ -30,26 +44,43 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
   const handleSubmit = async () => {
     if (!selectedProduct || !offerPercentage) return;
 
-    const data = {
-      productId: selectedProduct._id,
-      sellerEmail,
-      percentage: parseInt(offerPercentage),
-      image,
-      description,
-    };
-
     try {
-      await axios.post('/admin/offer-requests', data);
+      setUploading(true);
+      let imageUrl = '';
+
+      if (imageFile) {
+        imageUrl = await uploadToCloudinary(imageFile);
+      }
+
+      const data = {
+        name: selectedProduct.name,
+        productId: selectedProduct._id,
+        sellerEmail,
+        percentage: parseInt(offerPercentage),
+        image: imageUrl,
+        description,
+      };
+
+      await axios.post('http://localhost:3000/admin/offer-requests', data);
+
       dialogRef.current.close();
       setOfferPercentage('');
       setDescription('');
-      setImage('');
-      alert('Offer request submitted');
+      setImageFile(null);
+
+      // 🔄 Refresh product list
+      await queryClient.invalidateQueries(['products', user.email]);
+      toast.success('Offer request submitted');
     } catch (err) {
       console.error(err);
-      alert('Failed to submit');
+      toast.error('Failed to submit');
+    } finally {
+      setUploading(false);
     }
   };
+
+  if (isLoading) return <p className="text-center">Loading products...</p>;
+  if (isError) return <p className="text-center text-red-500">Failed to load products.</p>;
 
   return (
     <div className="p-4 space-y-6">
@@ -58,14 +89,20 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
         <table className="table w-full">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Name</th>
+              <th>Price (৳)</th>
               <th>Discount %</th>
             </tr>
           </thead>
           <tbody>
             {offered.map((p) => (
               <tr key={p._id}>
+                <td>
+                  <img src={p.image} className="w-12 h-12 rounded" />
+                </td>
                 <td>{p.name}</td>
+                <td>{p.price}</td>
                 <td>{p.discount}%</td>
               </tr>
             ))}
@@ -78,14 +115,20 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
         <table className="table w-full">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Name</th>
+              <th>Price (৳)</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {normal.map((p) => (
               <tr key={p._id}>
+                <td>
+                  <img src={p.image} className="w-12 h-12 rounded" />
+                </td>
                 <td>{p.name}</td>
+                <td>{p.price}</td>
                 <td>
                   <button
                     className="btn btn-sm btn-accent"
@@ -116,13 +159,12 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
               onChange={(e) => setOfferPercentage(e.target.value)}
             />
 
-            <label className="label">Ad Image URL (optional)</label>
+            <label className="label">Upload Ad Image</label>
             <input
-              type="text"
-              placeholder="Image URL"
-              className="input input-bordered w-full"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
+              type="file"
+              accept="image/*"
+              className="file-input file-input-bordered w-full"
+              onChange={(e) => setImageFile(e.target.files[0])}
             />
 
             <label className="label">Short Description</label>
@@ -134,12 +176,17 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
             ></textarea>
           </div>
           <div className="modal-action">
-            <button className="btn btn-success" onClick={handleSubmit}>
-              Submit
+            <button
+              className="btn btn-success"
+              onClick={handleSubmit}
+              disabled={uploading}
+            >
+              {uploading ? 'Uploading...' : 'Submit'}
             </button>
             <button
               className="btn btn-outline"
               onClick={() => dialogRef.current.close()}
+              disabled={uploading}
             >
               Cancel
             </button>
@@ -151,3 +198,4 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
 };
 
 export default OfferAdvertiseManager;
+

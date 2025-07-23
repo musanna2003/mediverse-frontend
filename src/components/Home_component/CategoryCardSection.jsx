@@ -1,28 +1,50 @@
-import React from 'react';
-import { FaCapsules, FaSyringe, FaTablets, FaPills, FaHeart } from 'react-icons/fa';
-import { FaKitMedical } from "react-icons/fa6";
-
-
-const categories = [
-  { id: 1, name: 'Capsules', icon: <FaCapsules className="text-4xl text-primary" />, count: 120 },
-  { id: 2, name: 'Injections', icon: <FaSyringe className="text-4xl text-primary" />, count: 45 },
-  { id: 3, name: 'Tablets', icon: <FaTablets className="text-4xl text-primary" />, count: 200 },
-  { id: 4, name: 'Heart Care', icon: <FaHeart className="text-4xl text-primary" />, count: 32 },
-  { id: 5, name: 'First Aid', icon: <FaKitMedical className="text-4xl text-primary" />, count: 58 },
-  { id: 6, name: 'Pain Relief', icon: <FaPills className="text-4xl text-primary" />, count: 90 },
-];
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const CategoryCardSection = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/admin/categories')
+      .then((res) => {
+        setCategories(res.data || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching categories:', err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-10">Loading categories...</div>;
+  }
+
   return (
     <section className="py-10 px-4 md:px-10 bg-base-100">
       <h2 className="text-3xl font-bold text-center mb-8">Browse by Category</h2>
-      <div className="grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-3">
-        {categories.map(category => (
-          <div key={category.id} className="card shadow-md bg-base-200 hover:shadow-lg transition duration-300">
-            <div className="card-body items-center text-center">
-              <div className="mb-4">{category.icon}</div>
-              <h3 className="card-title">{category.name}</h3>
-              <p className="text-sm text-gray-500">{category.count} Medicines</p>
+      <div className="grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {categories.map((category, index) => (
+          <div
+            key={index}
+            className="card w-full bg-base-200 shadow-lg border hover:shadow-xl hover:scale-[1.02] transition duration-300 rounded-2xl"
+            onClick={() => navigate('/shop', { state: { category: category.name } })}
+          >
+            <div className="card-body items-center text-center p-4">
+              <div className="mb-4 w-24 h-24 rounded-full overflow-hidden shadow-md">
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              <h3 className="card-title text-lg font-semibold">
+                {category.name}
+              </h3>
             </div>
           </div>
         ))}
@@ -32,3 +54,4 @@ const CategoryCardSection = () => {
 };
 
 export default CategoryCardSection;
+

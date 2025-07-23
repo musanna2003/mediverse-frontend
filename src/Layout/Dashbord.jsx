@@ -59,16 +59,24 @@ const Dashboard = () => {
           {/* Navigation Links */}
           <ul className="p-4 text-base-content">
             <li><Link to={"/dashboard"}>Dash Board</Link></li>
+
+            {/* user */}
+            <li><Link to={"/dashboard/user-payments"}>Payment history(user)</Link></li>
+
+            {/* seller */}
             <li><Link to={"/dashboard/manage-medicines"}>Manage Products</Link></li>
             <li><Link to={"/dashboard/addproduct"}>Add Product</Link></li>
+            <li><Link to={"/dashboard/seller-payment"}>Payment history(seller)</Link></li>
+            <li><Link to={"/dashboard/offer-req"}>Ask For Advertisement</Link></li>
+
+            {/* admin */}
             <li><Link to={"/dashboard/manage-users"}>Manage Users</Link></li>
             <li><Link to={"/dashboard/seller-list"}>Seller List</Link></li>
             <li><Link to={"/dashboard/seller-req"}>Seller Request</Link></li>
             <li><Link to={"/dashboard/payment-management"}>Payment management</Link></li>
             <li><Link to={"/dashboard/sales-report"}>Sales Report</Link></li>
-            <li><Link to={"/dashboard/seller-payment"}>Payment history(seller)</Link></li>
-            <li><Link to={"/dashboard/user-payments"}>Payment history(user)</Link></li>
-            <li><Link to={"/dashboard/offer-req"}>Ask For Advertisement</Link></li>
+            <li><Link to={"/dashboard/category"}>Manage Category</Link></li>
+            <li><Link to={"/dashboard/offer-req-admin"}>Manage banner Advertise</Link></li>
             
           </ul>
         </div>

@@ -24,6 +24,8 @@ import AdminSalesReport from "../pages/Dashboard/AdminSalesReport";
 import SellerPaymentHistory from "../pages/Dashboard/SellerPaymentHistory";
 import UserPaymentHistory from "../pages/Dashboard/UserPaymentHistory";
 import OfferAdvertiseManager from "../pages/Dashboard/OfferAdvertiseManager";
+import ManageBannerAds from "../pages/Dashboard/ManageBannerAds";
+import ManageCategories from "../pages/Dashboard/ManageCategories";
 
 const router = createBrowserRouter([
     {
@@ -122,6 +124,14 @@ const router = createBrowserRouter([
             {
                 path : "/dashboard/offer-req",
                 element : <OfferAdvertiseManager></OfferAdvertiseManager>
+            },
+            {
+                path : "/dashboard/offer-req-admin",
+                element : <ManageBannerAds></ManageBannerAds>
+            },
+            {
+                path : "/dashboard/category",
+                element : <ManageCategories></ManageCategories>
             },
             
         ]
