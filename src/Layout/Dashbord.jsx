@@ -1,13 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { Link, Outlet } from 'react-router';
 import useAuth from '../Context/useAuth';
 import { FaHome } from "react-icons/fa";
 import { ToastContainer } from 'react-toastify';
+import axios from 'axios';
 
 const Dashboard = () => {
   //TODO
-  const {user} = useAuth();
+
+  const { user } = useAuth(); // assumes user.email is available
+  const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+      const fetchUserProfile = async () => {
+          if (!user?.email) return;
+
+          setLoading(true);
+          setError(null);
+
+          try {
+              const res = await axios.get('http://localhost:3000/users/profile', {
+                  params: { email: user.email },
+              });
+              setUserProfile(res.data);
+          } catch (err) {
+              console.error(err);
+              setError('Failed to fetch user profile');
+          } finally {
+              setLoading(false);
+          }
+      };
+
+      fetchUserProfile();
+  }, [user?.email]);
+
+  if (loading) return <p>Loading profile...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!userProfile) return <p>No profile data.</p>;
 
   return (
     <div className="drawer md:drawer-open min-h-screen">
@@ -58,26 +90,36 @@ const Dashboard = () => {
 
           {/* Navigation Links */}
           <ul className="p-4 text-base-content">
-            <li><Link to={"/dashboard"}>Dash Board</Link></li>
+            <li><Link to={"/dashboard"}>Dashboard</Link></li>
+            {/* User-specific links */}
+            {userProfile?.role === 'user' && (
+                <>
+                    <li><Link to={"/dashboard/user-payments"}>Payment History (User)</Link></li>
+                </>
+            )}
 
-            {/* user */}
-            <li><Link to={"/dashboard/user-payments"}>Payment history(user)</Link></li>
+            {/* Seller-specific links */}
+            {userProfile?.role === 'seller' && (
+                <>
+                    <li><Link to={"/dashboard/manage-medicines"}>Manage Products</Link></li>
+                    <li><Link to={"/dashboard/addproduct"}>Add Product</Link></li>
+                    <li><Link to={"/dashboard/seller-payment"}>Payment History (Seller)</Link></li>
+                    <li><Link to={"/dashboard/offer-req"}>Ask For Advertisement</Link></li>
+                </>
+            )}
 
-            {/* seller */}
-            <li><Link to={"/dashboard/manage-medicines"}>Manage Products</Link></li>
-            <li><Link to={"/dashboard/addproduct"}>Add Product</Link></li>
-            <li><Link to={"/dashboard/seller-payment"}>Payment history(seller)</Link></li>
-            <li><Link to={"/dashboard/offer-req"}>Ask For Advertisement</Link></li>
-
-            {/* admin */}
-            <li><Link to={"/dashboard/manage-users"}>Manage Users</Link></li>
-            <li><Link to={"/dashboard/seller-list"}>Seller List</Link></li>
-            <li><Link to={"/dashboard/seller-req"}>Seller Request</Link></li>
-            <li><Link to={"/dashboard/payment-management"}>Payment management</Link></li>
-            <li><Link to={"/dashboard/sales-report"}>Sales Report</Link></li>
-            <li><Link to={"/dashboard/category"}>Manage Category</Link></li>
-            <li><Link to={"/dashboard/offer-req-admin"}>Manage banner Advertise</Link></li>
-            
+            {/* Admin-specific links */}
+            {userProfile?.role === 'admin' && (
+                <>
+                    <li><Link to={"/dashboard/manage-users"}>Manage Users</Link></li>
+                    <li><Link to={"/dashboard/seller-list"}>Seller List</Link></li>
+                    <li><Link to={"/dashboard/seller-req"}>Seller Request</Link></li>
+                    <li><Link to={"/dashboard/payment-management"}>Payment Management</Link></li>
+                    <li><Link to={"/dashboard/sales-report"}>Sales Report</Link></li>
+                    <li><Link to={"/dashboard/category"}>Manage Category</Link></li>
+                    <li><Link to={"/dashboard/offer-req-admin"}>Manage Banner Advertise</Link></li>
+                </>
+              )}
           </ul>
         </div>
       </div>

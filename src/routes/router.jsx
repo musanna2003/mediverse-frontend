@@ -26,6 +26,9 @@ import UserPaymentHistory from "../pages/Dashboard/UserPaymentHistory";
 import OfferAdvertiseManager from "../pages/Dashboard/OfferAdvertiseManager";
 import ManageBannerAds from "../pages/Dashboard/ManageBannerAds";
 import ManageCategories from "../pages/Dashboard/ManageCategories";
+import AdminDashboard from "../pages/Dashboard/AdminDashboard";
+import SellerDashboard from "../pages/Dashboard/SellerDashboard";
+import RoleBasedRoute from "./privet_route/RoleBasedRoute";
 
 const router = createBrowserRouter([
     {
@@ -51,11 +54,11 @@ const router = createBrowserRouter([
             },
             {
                 path : "/profile",
-                Component : Profile,
+                element : <UserRoute><Profile/></UserRoute>
             },
             {
                 path : "/cart",
-                Component : CartPage,
+                element : <UserRoute><CartPage/></UserRoute>
             },
             {
                 path : "/vendor-registration",
@@ -63,18 +66,19 @@ const router = createBrowserRouter([
             },
             {
                 path : "/checkout",
-                element : <CheckoutPage></CheckoutPage>
+                element : <UserRoute><CheckoutPage></CheckoutPage></UserRoute>
             },
             {
                 path : "/invoice",
-                element : <InvoicePage></InvoicePage>
+                element : <UserRoute><InvoicePage></InvoicePage></UserRoute>
             },
 
         ]
     },
     {
         path : '/dashboard',
-        element : <Dashboard></Dashboard>,
+        element : <UserRoute><Dashboard></Dashboard></UserRoute>,
+        errorElement: <ErrorPage></ErrorPage>,
         children : [
             {
                 index : true,
@@ -87,51 +91,51 @@ const router = createBrowserRouter([
             {
                 path :"/dashboard/edit/:id",
                 loader : ({params}) => fetch(`http://localhost:3000/products/${params.id}`),
-                element: <EditProduct />
+                element: <RoleBasedRoute allowedRoles={['seller','admin']} showWarning><EditProduct /></RoleBasedRoute>
             },
             {
                 path : "/dashboard/manage-medicines",
-                element : <ManageMedicines></ManageMedicines>
+                element : <RoleBasedRoute allowedRoles={['seller','admin']} showWarning><ManageMedicines></ManageMedicines></RoleBasedRoute>
             },
             {
                 path : "/dashboard/manage-users",
-                element : <ManageUsers></ManageUsers>
+                element : <RoleBasedRoute allowedRoles={['admin']} showWarning><ManageUsers></ManageUsers></RoleBasedRoute>
             },
             {
                 path : "/dashboard/seller-list",
-                element : <SellerList></SellerList>
+                element : <RoleBasedRoute allowedRoles={['admin']} showWarning><SellerList></SellerList></RoleBasedRoute>
             },
             {
                 path : "/dashboard/seller-req",
-                element : <SellerReq></SellerReq>
+                element : <RoleBasedRoute allowedRoles={['admin']} showWarning><SellerReq></SellerReq></RoleBasedRoute>
             },
             {
                 path : "/dashboard/payment-management",
-                element : <AdminPayments></AdminPayments>
+                element : <RoleBasedRoute allowedRoles={['admin']} showWarning><AdminPayments></AdminPayments></RoleBasedRoute>
             },
             {
                 path : "/dashboard/sales-report",
-                element : <AdminSalesReport></AdminSalesReport>
+                element :<RoleBasedRoute allowedRoles={['admin']} showWarning><AdminSalesReport></AdminSalesReport></RoleBasedRoute>
             },
             {
                 path : "/dashboard/seller-payment",
-                element : <SellerPaymentHistory></SellerPaymentHistory>
+                element : <RoleBasedRoute allowedRoles={['admin','seller']} showWarning><SellerPaymentHistory></SellerPaymentHistory></RoleBasedRoute>
             },
             {
                 path : "/dashboard/user-payments",
-                element : <UserPaymentHistory></UserPaymentHistory>
+                element :<RoleBasedRoute allowedRoles={['admin','user']} showWarning><UserPaymentHistory></UserPaymentHistory></RoleBasedRoute>
             },
             {
                 path : "/dashboard/offer-req",
-                element : <OfferAdvertiseManager></OfferAdvertiseManager>
+                element :<RoleBasedRoute allowedRoles={['admin','seller']} showWarning><OfferAdvertiseManager></OfferAdvertiseManager></RoleBasedRoute>
             },
             {
                 path : "/dashboard/offer-req-admin",
-                element : <ManageBannerAds></ManageBannerAds>
+                element :<RoleBasedRoute allowedRoles={['admin']} showWarning><ManageBannerAds></ManageBannerAds></RoleBasedRoute>
             },
             {
                 path : "/dashboard/category",
-                element : <ManageCategories></ManageCategories>
+                element :<RoleBasedRoute allowedRoles={['admin']} showWarning><ManageCategories></ManageCategories></RoleBasedRoute>
             },
             
         ]

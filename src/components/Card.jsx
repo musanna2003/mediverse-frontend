@@ -1,8 +1,28 @@
+import axios from 'axios';
 import React from 'react';
 import { FaCartShopping } from "react-icons/fa6";
+import { toast } from 'react-toastify';
+import useAuth from '../Context/useAuth';
 
 const Card = ({medicine}) => {
+    const {user} = useAuth();
+    const addToCart = async (email, p_id, qty = 1) => {
+        
+        try {
+        const res = await axios.post('http://localhost:3000/cart', {
+            email,
+            p_id,
+            qty
+        });
+        console.log('✅ Added to cart:', res.data);
+        toast.success('✅ Added to cart:', res.data)
+        } catch (error) {
+        console.error('❌ Failed to add to cart:', error);
+        toast.error('❌ Failed to add to cart:', error);
+        }
+    };
     const { name, description, image, price } = medicine;
+
     return (
         <div className="card w-full bg-base-100 shadow-md border border-base-200 hover:shadow-lg transition">
             <figure>
@@ -17,7 +37,8 @@ const Card = ({medicine}) => {
                 <p className="text-primary font-bold text-lg">৳{price}</p>
                 
                 </div>
-                <button className="btn btn-sm btn-primary">
+                <button className="btn btn-sm btn-primary"
+                        onClick={()=>addToCart(user.email, medicine._id, 1)}>
                     <FaCartShopping className="mr-1" />
                     Add to Cart
                 </button>

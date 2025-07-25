@@ -28,7 +28,7 @@ const Nav = () => {
   return (
     <div className="navbar bg-primary/80 backdrop-blur-md text-white shadow-md sticky top-0 z-[1000]">
       <div className="navbar-start">
-        <NavLink to="/" className="btn btn-ghost text-xl normal-case">MediVerse</NavLink>
+        <Link to="/" className="btn btn-ghost text-xl normal-case">MediVerse</Link>
       </div>
 
       <div className="navbar-center hidden lg:flex">
