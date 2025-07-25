@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import useAuth from '../../Context/useAuth';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const ManageMedicines = () => {
     const queryClient = useQueryClient();
@@ -11,7 +12,7 @@ const ManageMedicines = () => {
 
     const fetchMedicines = async () => {
         const params = { sellerEmail: user.email};
-        const res = await axios.get('http://localhost:3000/products', { params });
+        const res = await axiosSecure.get('http://localhost:3000/products', { params });
         return res.data;
     };
 
@@ -22,7 +23,7 @@ const ManageMedicines = () => {
 
     const handleDeleteProduct = async (id) => {
         try {
-            const res = await axios.delete(`http://localhost:3000/products/${id}`);
+            const res = await axiosSecure.delete(`http://localhost:3000/products/${id}`);
             console.log(res.data)
             if (res.data?.deletedId) {
                 toast.success('Product deleted successfully!');

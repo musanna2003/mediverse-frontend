@@ -4,6 +4,7 @@ import uploadToCloudinary from '../../services/uploadToCloudinary';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useLoaderData, useNavigate } from 'react-router';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const categories = ['Pain Relief', 'Antibiotics', 'Vitamins', 'First Aid', 'Diabetes Care', 'Heart Care'];
 const companies = ['Square', 'Beximco', 'ACI', 'Renata', 'Incepta', 'ACME'];
@@ -52,7 +53,7 @@ const EditProduct = () => {
                 uploadDate: new Date().toISOString(),
             };
 
-            const res = await axios.patch(`http://localhost:3000/products/${product._id}`, updatedProduct);
+            const res = await axiosSecure.patch(`http://localhost:3000/products/${product._id}`, updatedProduct);
 
             if (res.data?.modifiedCount > 0) {
                 toast.success("Product updated successfully!");

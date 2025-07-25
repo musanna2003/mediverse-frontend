@@ -5,6 +5,7 @@ import { FaBullhorn } from 'react-icons/fa';
 import useAuth from '../../Context/useAuth';
 import uploadToCloudinary from '../../services/uploadToCloudinary';
 import { toast } from 'react-toastify';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const OfferAdvertiseManager = ({ sellerEmail }) => {
   const { user } = useAuth();
@@ -18,7 +19,7 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
 
   const fetchSellerProducts = async () => {
     const params = { sellerEmail: user.email };
-    const res = await axios.get('http://localhost:3000/products', { params });
+    const res = await axiosSecure.get('http://localhost:3000/products', { params });
     return res.data;
   };
 
@@ -61,7 +62,7 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
         description,
       };
 
-      await axios.post('http://localhost:3000/admin/offer-requests', data);
+      await axiosSecure.post('http://localhost:3000/admin/offer-requests', data);
 
       dialogRef.current.close();
       setOfferPercentage('');

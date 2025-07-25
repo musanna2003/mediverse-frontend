@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import useAuth from '../../Context/useAuth';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const InvoicePage = () => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const InvoicePage = () => {
 
   useEffect(() => {
     if (user?.email) {
-      axios
+      axiosSecure
         .get('http://localhost:3000/users/profile', {
           params: { email: user.email },
         })

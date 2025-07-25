@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import uploadToCloudinary from '../../services/uploadToCloudinary';
 import { toast } from 'react-toastify';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const ManageCategories = () => {
   const [categoryName, setCategoryName] = useState('');
@@ -35,7 +36,7 @@ const ManageCategories = () => {
 
       const newCategory = { name: categoryName, image: imageUrl };
 
-      await axios.post('http://localhost:3000/admin/categories', newCategory);
+      await axiosSecure.post('http://localhost:3000/admin/categories', newCategory);
 
       toast.success('Category added!');
       dialogRef.current.close();
@@ -51,7 +52,7 @@ const ManageCategories = () => {
 
   const handleDelete = async (name) => {
     try {
-      await axios.delete(`http://localhost:3000/admin/categories/${name}`);
+      await axiosSecure.delete(`http://localhost:3000/admin/categories/${name}`);
       toast.success('Category deleted');
       queryClient.invalidateQueries(['categories']);
     } catch {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaUserShield, FaUserTie } from 'react-icons/fa';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 
 const ManageUsers = () => {
@@ -11,7 +12,7 @@ const ManageUsers = () => {
 
     // 🧲 Fetch users by role
     const fetchUsersByRole = async (role) => {
-    const res = await axios.get('http://localhost:3000/users', {
+    const res = await axiosSecure.get('http://localhost:3000/users', {
         params: { role },
     });
     return res.data;
@@ -24,7 +25,7 @@ const ManageUsers = () => {
   // 🔁 Update role
     const updateRole = async (user, newRole) => {
         try {
-            const res = await axios.put('http://localhost:3000/users/update', {
+            const res = await axiosSecure.put('http://localhost:3000/users/update', {
                 email : user.email,
                 role: newRole,
             });
@@ -40,7 +41,7 @@ const ManageUsers = () => {
                     state: 'approved',
                     createdAt: new Date().toISOString(),
                 };
-                const res2 = await axios.post('http://localhost:3000/sellers', sellerData);
+                const res2 = await axiosSecure.post('http://localhost:3000/sellers', sellerData);
                 console.log(res2.data)
             }
 

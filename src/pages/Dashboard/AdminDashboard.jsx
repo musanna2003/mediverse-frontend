@@ -5,6 +5,7 @@ import {
   PieChart, Pie, Cell, Tooltip, Legend,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
 } from 'recharts';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const COLORS = ['#3b82f6', '#facc15']; // DaisyUI primary & yellow colors
 
@@ -12,7 +13,7 @@ const AdminDashboard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['sales-summary'],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:3000/admin/sales-summary');
+      const res = await axiosSecure.get('http://localhost:3000/admin/sales-summary');
       return res.data;
     }
   });

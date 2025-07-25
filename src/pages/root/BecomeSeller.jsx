@@ -4,6 +4,7 @@ import useAuth from '../../Context/useAuth';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 // import uploadToCloudinary from '../../services/uploadToCloudinary';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const BecomeSeller = () => {
   const { user } = useAuth();
@@ -40,7 +41,7 @@ const BecomeSeller = () => {
         createdAt: new Date().toISOString(),
       };
 
-      const res = await axios.post('http://localhost:3000/sellers', sellerData);
+      const res = await axiosSecure.post('http://localhost:3000/sellers', sellerData);
       if (res.data.insertedId) {
         toast.success("Seller application submitted!");
         reset();

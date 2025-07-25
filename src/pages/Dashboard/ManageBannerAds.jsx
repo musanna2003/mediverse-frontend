@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 // import { useState } from 'react';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const ManageBannerAds = () => {
     const queryClient = useQueryClient();
@@ -8,14 +9,14 @@ const ManageBannerAds = () => {
     const { data: ads = [], isLoading } = useQuery({
         queryKey: ['banner-ads'],
         queryFn: async () => {
-        const res = await axios.get('http://localhost:3000/admin/offer-requests');
+        const res = await axiosSecure.get('http://localhost:3000/admin/offer-requests');
         return res.data;
         }
     });
 
     const toggleMutation = useMutation({
         mutationFn: async ({ productId, isActive }) => {
-            return await axios.patch(
+            return await axiosSecure.patch(
             `http://localhost:3000/admin/offer-requests/${productId}`,
             { isActive }
             );

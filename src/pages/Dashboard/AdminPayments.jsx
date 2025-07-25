@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const AdminPayments = () => {
   const queryClient = useQueryClient();
@@ -9,7 +10,7 @@ const AdminPayments = () => {
   const { data: payments = [], isLoading } = useQuery({
     queryKey: ['payments'],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:3000/payments');
+      const res = await axiosSecure.get('http://localhost:3000/payments');
       return res.data;
     }
   });
@@ -17,7 +18,7 @@ const AdminPayments = () => {
   // Mutation to update payment status
   const mutation = useMutation({
     mutationFn: async (id) => {
-      return await axios.patch(`http://localhost:3000/payments/${id}`);
+      return await axiosSecure.patch(`http://localhost:3000/payments/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['payments']);

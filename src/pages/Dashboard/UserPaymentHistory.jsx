@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import useAuth from '../../Context/useAuth';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const UserPaymentHistory = () => {
   const { user } = useAuth();
@@ -9,7 +10,7 @@ const UserPaymentHistory = () => {
 
   const fetchPayments = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/order/seller-payments', {
+      const res = await axiosSecure.get('http://localhost:3000/order/seller-payments', {
         params: { userEmail: user.email },
       });
       setPayments(res.data);

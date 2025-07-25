@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from '../../components/CheckoutForm';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const stripePromise = loadStripe('pk_test_51RlXSMRR38pwOg3putQIGmYn0VIlvjM5WXm54efcMzsuZI2fP1JpruowquP64yhAYufiY55d4ASmxqkSeA2cAMCf00WbUBhQOL'); // ✅ replace with your real key
 

@@ -5,6 +5,7 @@ import SellerDashboard from './SellerDashboard';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import useAuth from '../../Context/useAuth';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const Dash = () => {
   const { user, loading } = useAuth();
@@ -12,7 +13,7 @@ const Dash = () => {
   const { data: currentUser, isLoading } = useQuery({
     queryKey: ['userRole', user?.email],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/users/profile`, {
+      const res = await axiosSecure.get(`http://localhost:3000/users/profile`, {
         params: { email: user?.email },
       });
       return res.data;

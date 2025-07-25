@@ -13,6 +13,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import { useQuery,  } from '@tanstack/react-query';
 import axios from 'axios';
 import Hero from './Hero';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const Slider = () => {
 
@@ -20,7 +21,7 @@ const Slider = () => {
     const { data: ads = [], isLoading } = useQuery({
         queryKey: ['banner-ads'],
         queryFn: async () => {
-        const res = await axios.get('http://localhost:3000/admin/offer-requests');
+        const res = await axiosSecure.get('http://localhost:3000/admin/offer-requests');
         console.log(res.data)
         return res.data;
         

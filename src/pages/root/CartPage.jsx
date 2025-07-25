@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router';
 import useAuth from '../../Context/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const fetchCartItems = async (email) => {
-  const res = await axios.get('http://localhost:3000/cart', {
+  const res = await axiosSecure.get('http://localhost:3000/cart', {
     params: { email },
   });
   return res.data;
@@ -71,7 +72,7 @@ const CartPage = () => {
 
   const removeItem = async (id) => {
     try {
-      await axios.delete('http://localhost:3000/cart', {
+      await axiosSecure.delete('http://localhost:3000/cart', {
         params: {
           email: user.email,
           productId: id,
@@ -87,7 +88,7 @@ const CartPage = () => {
 
   const clearCart = async () => {
     try {
-      await axios.delete('http://localhost:3000/cart', {
+      await axiosSecure.delete('http://localhost:3000/cart', {
         params: {
           email: user.email,
         },

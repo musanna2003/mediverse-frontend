@@ -3,9 +3,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const fetchSellerRequests = async () => {
-  const res = await axios.get('http://localhost:3000/seller?state=pending');
+  const res = await axiosSecure.get('http://localhost:3000/seller?state=pending');
   return res.data;
 };
 
@@ -20,11 +21,11 @@ const SellerReq = () => {
 
   const handleApprove = async () => {
     try {
-      const res = await axios.put(`http://localhost:3000/seller/state`, {
+      const res = await axiosSecure.put(`http://localhost:3000/seller/state`, {
         email: selectedSeller.email,
         state: 'approved',
       });
-      const res2 = await axios.put('http://localhost:3000/users/update', {
+      const res2 = await axiosSecure.put('http://localhost:3000/users/update', {
                 email : selectedSeller.email ,
                 role: "seller",
             });
@@ -40,7 +41,7 @@ const SellerReq = () => {
 
   const handleReject = async () => {
     try {
-      const res = await axios.delete(`http://localhost:3000/seller/${selectedSeller.email}`);
+      const res = await axiosSecure.delete(`http://localhost:3000/seller/${selectedSeller.email}`);
       if (res.data?.success) {
         toast.success('Seller request removed');
         queryClient.invalidateQueries(['pendingSellers']);

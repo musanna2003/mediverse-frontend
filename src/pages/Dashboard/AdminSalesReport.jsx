@@ -6,6 +6,7 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import 'react-datepicker/dist/react-datepicker.css';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const AdminSalesReport = () => {
   const [sales, setSales] = useState([]);
@@ -27,7 +28,7 @@ const AdminSalesReport = () => {
         params.endDate = end.toISOString();
       }
 
-      const res = await axios.get('http://localhost:3000/sales', { params });
+      const res = await axiosSecure.get('http://localhost:3000/sales', { params });
       setSales(res.data);
       console.log('Sales data:', res.data);
     } catch (error) {

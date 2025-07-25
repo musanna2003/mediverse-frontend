@@ -31,50 +31,52 @@ const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            setUser(currentUser);
-            setLoading(false);
+    const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
+        setUser(currentUser);
+        setLoading(false);
 
-            // For database
-            if (currentUser) {
-                const userData = {
-                    name: currentUser.displayName || "N/A",
-                    email: currentUser.email,
-                    photoURL: currentUser.photoURL || "N/A",
-                    role: "user",
-                    phone: "N/A",
-                    address: "N/A",
-                    cart : [],
-                    createdAt: new Date().toISOString(),
-                };
+        if (currentUser) {
+        const userData = {
+            name: currentUser.displayName || "N/A",
+            email: currentUser.email,
+            photoURL: currentUser.photoURL || "N/A",
+            role: "user",
+            phone: "N/A",
+            address: "N/A",
+            cart: [],
+            createdAt: new Date().toISOString(),
+        };
 
-                try {
-                    const res = await axios.post('http://localhost:3000/users', userData);
-                    console.log("✅ User synced with backend:", res.data);
-                } catch (err) {
-                    console.error("❌ Failed to sync user:", err);
-                }
-            }
+        // 1️⃣ Sync user to DB
+        try {
+            const res = await axios.post('http://localhost:3000/users', userData);
+            console.log("✅ User synced with backend:", res.data);
+        } catch (err) {
+            console.error("❌ Failed to sync user:", err);
+        }
 
-            //TODO JWT
-            // if (currentUser) {
-            //     const idToken = await currentUser.getIdToken();
+        // 2️⃣ Get JWT from backend and store in localStorage
+        try {
+            const tokenRes = await axios.post('http://localhost:3000/jwt', {
+            email: currentUser.email,
+            });
 
-            //     // ✅ Send token to backend to generate cookie
-            //     await axios.post('https://ph-assignment-11-backend.vercel.app/jwt', 
-            //         { idToken }, 
-            //         { withCredentials: true }
-            //     );
-            // } else {
-            //     // ✅ Optional: handle logout, clear cookie if needed
-            //     await axios.post('https://ph-assignment-11-backend.vercel.app/logout', {}, { withCredentials: true });
-            // }
+            const token = tokenRes.data.token;
+            localStorage.setItem('access-token', token);
+            console.log("✅ JWT stored in localStorage");
+        } catch (err) {
+            console.error("❌ Failed to get JWT:", err);
+        }
+        } else {
+        // 3️⃣ On logout: remove token
+        localStorage.removeItem('access-token');
+        console.log("🧹 JWT removed on logout");
+        }
+    });
 
-            
-        });
-
-        return () => unSubscribe();
+    return () => unSubscribe();
     }, []);
+
 
   const authInfo = {
     user,

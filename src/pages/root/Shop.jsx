@@ -4,6 +4,7 @@ import { FaSortAmountDownAlt } from 'react-icons/fa';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const Shop = () => {
 
@@ -15,14 +16,14 @@ const Shop = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-    axios.get('http://localhost:3000/admin/categories')
-      .then((res) => {
-        setCategories(res.data || []);
-      })
-      .catch((err) => {
-        console.error('Error fetching categories:', err);
-      });
-  }, []);
+        axios.get('http://localhost:3000/admin/categories')
+        .then((res) => {
+            setCategories(res.data || []);
+        })
+        .catch((err) => {
+            console.error('Error fetching categories:', err);
+        });
+    }, []);
 
     //functions
 
@@ -34,7 +35,7 @@ const Shop = () => {
         if (sortOrder === 'low') params.sort = 'price_asc';
         else if (sortOrder === 'high') params.sort = 'price_desc';
 
-        const res = await axios.get('http://localhost:3000/products', { params });
+        const res = await axiosSecure.get('http://localhost:3000/products', { params });
         return res.data;
     };
 

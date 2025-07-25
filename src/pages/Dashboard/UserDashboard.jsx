@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import useAuth from '../../Context/useAuth'; // assuming you have user context
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const COLORS = ['#22c55e', '#f97316'];
 
@@ -12,7 +13,7 @@ const UserDashboard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['user-sales-summary', user?.email],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:3000/user/sales-summary', {
+      const res = await axiosSecure.get('http://localhost:3000/user/sales-summary', {
         params: { email: user?.email },
       });
       return res.data;

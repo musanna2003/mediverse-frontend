@@ -5,6 +5,7 @@ import useAuth from '../Context/useAuth';
 import { FaHome } from "react-icons/fa";
 import { ToastContainer } from 'react-toastify';
 import axios from 'axios';
+import axiosSecure from '../Utilities/axiosSecure.js'; // path as needed
 
 const Dashboard = () => {
   //TODO
@@ -22,7 +23,7 @@ const Dashboard = () => {
           setError(null);
 
           try {
-              const res = await axios.get('http://localhost:3000/users/profile', {
+              const res = await axiosSecure.get('http://localhost:3000/users/profile', {
                   params: { email: user.email },
               });
               setUserProfile(res.data);

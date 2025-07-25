@@ -5,6 +5,7 @@ import {
   PieChart, Pie, Cell, Tooltip, Legend
 } from 'recharts';
 import useAuth from '../../Context/useAuth';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const COLORS = ['#22c55e', '#f97316']; // success and warning
 
@@ -14,7 +15,7 @@ const SellerDashboard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['seller-sales-summary'],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/seller/sales-summary?sellerEmail=${user.email}`);
+      const res = await axiosSecure.get(`http://localhost:3000/seller/sales-summary?sellerEmail=${user.email}`);
       return res.data;
     }
   });

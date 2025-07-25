@@ -4,6 +4,7 @@ import useAuth from '../../Context/useAuth';
 import axios from 'axios';
 import uploadToCloudinary from '../../services/uploadToCloudinary';
 import { toast } from 'react-toastify';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const companies = ['Square', 'Beximco', 'ACI', 'Renata', 'Incepta', 'ACME'];
 const units = ['mg', 'ml','g','pc'];
@@ -61,7 +62,7 @@ const AddProduct = () => {
 
       // ✅ POST to your backend
       try {
-        const response = await axios.post('http://localhost:3000/products', productData);
+        const response = await axiosSecure.post('http://localhost:3000/products', productData);
         console.log("Saved to DB:", response.data);
         toast.success("Upload Successful!");
       } catch (error) {

@@ -4,6 +4,7 @@ import useAuth from '../Context/useAuth';
 import { FaEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import uploadToCloudinary from '../services/uploadToCloudinary';
+import axiosSecure from '../Utilities/axiosSecure.js'
 
 const Profile = () => {
   const { user } = useAuth();
@@ -17,7 +18,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/users/profile', {
+        const res = await axiosSecure.get('http://localhost:3000/users/profile', {
             params: { email: user.email },
         });
         setUserData(res.data);

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import useAuth from '../../Context/useAuth';
 import axios from 'axios';
 import LoadingPage from '../../pages/LoadingPage';
+import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const RoleBasedRoute = ({ children, allowedRoles = [], redirectTo = '/login', showWarning = false }) => {
     const { user: firebaseUser, loading } = useAuth(); // From Firebase
@@ -20,7 +21,7 @@ const RoleBasedRoute = ({ children, allowedRoles = [], redirectTo = '/login', sh
             setDbError(null);
 
             try {
-                const res = await axios.get('http://localhost:3000/users/profile', {
+                const res = await axiosSecure.get('http://localhost:3000/users/profile', {
                     params: { email: firebaseUser.email },
                 });
                 setDbUser(res.data);
