@@ -28,7 +28,7 @@ const AdminSalesReport = () => {
         params.endDate = end.toISOString();
       }
 
-      const res = await axiosSecure.get('http://localhost:3000/sales', { params });
+      const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/sales', { params });
       setSales(res.data);
       console.log('Sales data:', res.data);
     } catch (error) {

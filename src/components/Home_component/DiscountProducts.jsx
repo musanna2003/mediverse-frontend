@@ -12,7 +12,7 @@ const DiscountProducts = () => {
     useEffect(() => {
         const fetchDiscountedProducts = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/products', {
+                const res = await axios.get('https://ph-assignment-12-backend.vercel.app/products', {
                     params: { offer: true },
                 });
                 setDiscountedProducts(res.data);

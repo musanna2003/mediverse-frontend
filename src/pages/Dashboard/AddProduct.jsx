@@ -20,7 +20,7 @@ const AddProduct = () => {
 
   
   useEffect(() => {
-    axios.get('http://localhost:3000/admin/categories')
+    axios.get('https://ph-assignment-12-backend.vercel.app/admin/categories')
       .then((res) => {
         setCategories(res.data || []);
         setLoading(false);
@@ -58,11 +58,11 @@ const AddProduct = () => {
         uploadDate: new Date().toISOString(),
       };
 
-      console.log("Uploaded Product:", productData);
+      
 
       // ✅ POST to your backend
       try {
-        const response = await axiosSecure.post('http://localhost:3000/products', productData);
+        const response = await axiosSecure.post('https://ph-assignment-12-backend.vercel.app/products', productData);
         console.log("Saved to DB:", response.data);
         toast.success("Upload Successful!");
       } catch (error) {

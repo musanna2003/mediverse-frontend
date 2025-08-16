@@ -13,7 +13,7 @@ const CheckoutForm = ({ cartItems, totalAmount, onSuccess }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const { user } = useAuth();
-    console.log(cartItems)
+   
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,7 +23,7 @@ const CheckoutForm = ({ cartItems, totalAmount, onSuccess }) => {
         setError('');
 
         try {
-        const { data: clientSecret } = await axios.post('http://localhost:3000/create-payment-intent', {
+        const { data: clientSecret } = await axios.post('https://ph-assignment-12-backend.vercel.app/create-payment-intent', {
             amount: totalAmount,
         });
 
@@ -52,10 +52,10 @@ const CheckoutForm = ({ cartItems, totalAmount, onSuccess }) => {
             }));
 
             // ✅ Save all orders
-            await axios.post('http://localhost:3000/orders', orders);
+            await axios.post('https://ph-assignment-12-backend.vercel.app/orders', orders);
 
             // ✅ Clear cart
-            await axios.delete('http://localhost:3000/cart', {
+            await axios.delete('https://ph-assignment-12-backend.vercel.app/cart', {
             params: { email: user.email }
             });
 

@@ -90,7 +90,7 @@ const router = createBrowserRouter([
             },
             {
                 path :"/dashboard/edit/:id",
-                loader : ({params}) => fetch(`http://localhost:3000/products/${params.id}`),
+                loader : ({params}) => fetch(`https://ph-assignment-12-backend.vercel.app/products/${params.id}`),
                 element: <RoleBasedRoute allowedRoles={['seller','admin']} showWarning><EditProduct /></RoleBasedRoute>
             },
             {

@@ -13,7 +13,7 @@ const AdminDashboard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['sales-summary'],
     queryFn: async () => {
-      const res = await axiosSecure.get('http://localhost:3000/admin/sales-summary');
+      const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/admin/sales-summary');
       return res.data;
     }
   });

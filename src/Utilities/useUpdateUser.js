@@ -8,7 +8,7 @@ const useUpdateUser = () => {
 
   return useMutation({
     mutationFn: async (updatedUserData) => {
-      const res = await axios.put('http://localhost:3000/users/update', updatedUserData);
+      const res = await axios.put('https://ph-assignment-12-backend.vercel.app/users/update', updatedUserData);
       return res.data;
     },
     onSuccess: (data, variables) => {

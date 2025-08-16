@@ -15,7 +15,7 @@ const SellerDashboard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['seller-sales-summary'],
     queryFn: async () => {
-      const res = await axiosSecure.get(`http://localhost:3000/seller/sales-summary?sellerEmail=${user.email}`);
+      const res = await axiosSecure.get(`https://ph-assignment-12-backend.vercel.app/seller/sales-summary?sellerEmail=${user.email}`);
       return res.data;
     }
   });

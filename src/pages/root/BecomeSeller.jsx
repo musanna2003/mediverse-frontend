@@ -41,7 +41,7 @@ const BecomeSeller = () => {
         createdAt: new Date().toISOString(),
       };
 
-      const res = await axiosSecure.post('http://localhost:3000/sellers', sellerData);
+      const res = await axiosSecure.post('https://ph-assignment-12-backend.vercel.app/sellers', sellerData);
       if (res.data.insertedId) {
         toast.success("Seller application submitted!");
         reset();

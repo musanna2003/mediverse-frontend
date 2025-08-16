@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import useAuth from '../../Context/useAuth';
@@ -8,14 +8,14 @@ const InvoicePage = () => {
   const location = useLocation();
   const { cartItems, totalAmount, paymentId } = location.state || {};
   const {user} = useAuth();
-  console.log(user.email)
+ 
 
   const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     if (user?.email) {
       axiosSecure
-        .get('http://localhost:3000/users/profile', {
+        .get('https://ph-assignment-12-backend.vercel.app/users/profile', {
           params: { email: user.email },
         })
         .then((res) => {

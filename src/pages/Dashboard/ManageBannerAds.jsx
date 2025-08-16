@@ -9,7 +9,7 @@ const ManageBannerAds = () => {
     const { data: ads = [], isLoading } = useQuery({
         queryKey: ['banner-ads'],
         queryFn: async () => {
-        const res = await axiosSecure.get('http://localhost:3000/admin/offer-requests');
+        const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/admin/offer-requests');
         return res.data;
         }
     });
@@ -17,7 +17,7 @@ const ManageBannerAds = () => {
     const toggleMutation = useMutation({
         mutationFn: async ({ productId, isActive }) => {
             return await axiosSecure.patch(
-            `http://localhost:3000/admin/offer-requests/${productId}`,
+            `https://ph-assignment-12-backend.vercel.app/admin/offer-requests/${productId}`,
             { isActive }
             );
         },

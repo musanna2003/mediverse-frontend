@@ -12,7 +12,7 @@ const ManageUsers = () => {
 
     // 🧲 Fetch users by role
     const fetchUsersByRole = async (role) => {
-    const res = await axiosSecure.get('http://localhost:3000/users', {
+    const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/users', {
         params: { role },
     });
     return res.data;
@@ -25,7 +25,7 @@ const ManageUsers = () => {
   // 🔁 Update role
     const updateRole = async (user, newRole) => {
         try {
-            const res = await axiosSecure.put('http://localhost:3000/users/update', {
+            const res = await axiosSecure.put('https://ph-assignment-12-backend.vercel.app/users/update', {
                 email : user.email,
                 role: newRole,
             });
@@ -41,7 +41,7 @@ const ManageUsers = () => {
                     state: 'approved',
                     createdAt: new Date().toISOString(),
                 };
-                const res2 = await axiosSecure.post('http://localhost:3000/sellers', sellerData);
+                const res2 = await axiosSecure.post('https://ph-assignment-12-backend.vercel.app/sellers', sellerData);
                 console.log(res2.data)
             }
 

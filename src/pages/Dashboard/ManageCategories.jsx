@@ -14,7 +14,7 @@ const ManageCategories = () => {
   const queryClient = useQueryClient();
 
   const fetchCategories = async () => {
-    const res = await axios.get('http://localhost:3000/admin/categories');
+    const res = await axios.get('https://ph-assignment-12-backend.vercel.app/admin/categories');
     return res.data;
   };
 
@@ -36,7 +36,7 @@ const ManageCategories = () => {
 
       const newCategory = { name: categoryName, image: imageUrl };
 
-      await axiosSecure.post('http://localhost:3000/admin/categories', newCategory);
+      await axiosSecure.post('https://ph-assignment-12-backend.vercel.app/admin/categories', newCategory);
 
       toast.success('Category added!');
       dialogRef.current.close();
@@ -52,7 +52,7 @@ const ManageCategories = () => {
 
   const handleDelete = async (name) => {
     try {
-      await axiosSecure.delete(`http://localhost:3000/admin/categories/${name}`);
+      await axiosSecure.delete(`https://ph-assignment-12-backend.vercel.app/admin/categories/${name}`);
       toast.success('Category deleted');
       queryClient.invalidateQueries(['categories']);
     } catch {

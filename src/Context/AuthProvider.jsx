@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
 
         // 1️⃣ Sync user to DB
         try {
-            const res = await axios.post('http://localhost:3000/users', userData);
+            const res = await axios.post('https://ph-assignment-12-backend.vercel.app/users', userData);
             console.log("✅ User synced with backend:", res.data);
         } catch (err) {
             console.error("❌ Failed to sync user:", err);
@@ -57,7 +57,7 @@ const AuthProvider = ({ children }) => {
 
         // 2️⃣ Get JWT from backend and store in localStorage
         try {
-            const tokenRes = await axios.post('http://localhost:3000/jwt', {
+            const tokenRes = await axios.post('https://ph-assignment-12-backend.vercel.app/jwt', {
             email: currentUser.email,
             });
 

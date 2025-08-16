@@ -10,7 +10,7 @@ const SellerPaymentHistory = () => {
 
   const fetchPayments = async () => {
     try {
-      const res = await axiosSecure.get('http://localhost:3000/order/seller-payments', {
+      const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/order/seller-payments', {
         params: { sellerEmail: user.email },
       });
       setPayments(res.data);

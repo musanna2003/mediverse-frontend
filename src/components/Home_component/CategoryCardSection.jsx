@@ -9,7 +9,7 @@ const CategoryCardSection = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:3000/admin/categories')
+    axios.get('https://ph-assignment-12-backend.vercel.app/admin/categories')
       .then((res) => {
         setCategories(res.data || []);
         setLoading(false);

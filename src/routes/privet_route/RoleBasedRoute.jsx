@@ -21,7 +21,7 @@ const RoleBasedRoute = ({ children, allowedRoles = [], redirectTo = '/login', sh
             setDbError(null);
 
             try {
-                const res = await axiosSecure.get('http://localhost:3000/users/profile', {
+                const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/users/profile', {
                     params: { email: firebaseUser.email },
                 });
                 setDbUser(res.data);

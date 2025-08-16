@@ -13,7 +13,7 @@ const Dash = () => {
   const { data: currentUser, isLoading } = useQuery({
     queryKey: ['userRole', user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`http://localhost:3000/users/profile`, {
+      const res = await axiosSecure.get(`https://ph-assignment-12-backend.vercel.app/users/profile`, {
         params: { email: user?.email },
       });
       return res.data;

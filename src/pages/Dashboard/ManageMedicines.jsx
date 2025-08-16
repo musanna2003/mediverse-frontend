@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductTable from '../../components/ProductTable';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+
 import { toast } from 'react-toastify';
 import useAuth from '../../Context/useAuth';
 import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
@@ -12,7 +12,7 @@ const ManageMedicines = () => {
 
     const fetchMedicines = async () => {
         const params = { sellerEmail: user.email};
-        const res = await axiosSecure.get('http://localhost:3000/products', { params });
+        const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/products', { params });
         return res.data;
     };
 
@@ -23,8 +23,7 @@ const ManageMedicines = () => {
 
     const handleDeleteProduct = async (id) => {
         try {
-            const res = await axiosSecure.delete(`http://localhost:3000/products/${id}`);
-            console.log(res.data)
+            const res = await axiosSecure.delete(`https://ph-assignment-12-backend.vercel.app/products/${id}`);
             if (res.data?.deletedId) {
                 toast.success('Product deleted successfully!');
                 queryClient.refetchQueries(['medicines']);

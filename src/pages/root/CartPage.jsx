@@ -7,7 +7,7 @@ import axios from 'axios';
 import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 const fetchCartItems = async (email) => {
-  const res = await axiosSecure.get('http://localhost:3000/cart', {
+  const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/cart', {
     params: { email },
   });
   return res.data;
@@ -72,7 +72,7 @@ const CartPage = () => {
 
   const removeItem = async (id) => {
     try {
-      await axiosSecure.delete('http://localhost:3000/cart', {
+      await axiosSecure.delete('https://ph-assignment-12-backend.vercel.app/cart', {
         params: {
           email: user.email,
           productId: id,
@@ -88,7 +88,7 @@ const CartPage = () => {
 
   const clearCart = async () => {
     try {
-      await axiosSecure.delete('http://localhost:3000/cart', {
+      await axiosSecure.delete('https://ph-assignment-12-backend.vercel.app/cart', {
         params: {
           email: user.email,
         },

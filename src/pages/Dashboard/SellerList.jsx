@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+
 import { FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
@@ -8,7 +8,7 @@ import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
 
 
 const fetchSellers = async (state) => {
-  const res = await axiosSecure.get('http://localhost:3000/seller', {
+  const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/seller', {
     params: { state }
   });
   return res.data;
@@ -29,8 +29,8 @@ const SellerList = () => {
         if (!selectedSeller) return;
 
         try {
-        const res = await axiosSecure.delete(`http://localhost:3000/seller/${selectedSeller.email}`);
-        const res2 = await axiosSecure.put('http://localhost:3000/users/update', {
+        const res = await axiosSecure.delete(`https://ph-assignment-12-backend.vercel.app/seller/${selectedSeller.email}`);
+        const res2 = await axiosSecure.put('https://ph-assignment-12-backend.vercel.app/users/update', {
                 email : selectedSeller.email ,
                 role: "user",
             });

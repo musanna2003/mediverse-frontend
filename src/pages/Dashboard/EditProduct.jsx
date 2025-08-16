@@ -53,7 +53,7 @@ const EditProduct = () => {
                 uploadDate: new Date().toISOString(),
             };
 
-            const res = await axiosSecure.patch(`http://localhost:3000/products/${product._id}`, updatedProduct);
+            const res = await axiosSecure.patch(`https://ph-assignment-12-backend.vercel.app/products/${product._id}`, updatedProduct);
 
             if (res.data?.modifiedCount > 0) {
                 toast.success("Product updated successfully!");

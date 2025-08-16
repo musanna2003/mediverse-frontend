@@ -16,7 +16,7 @@ const Shop = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/admin/categories')
+        axios.get('https://ph-assignment-12-backend.vercel.app/admin/categories')
         .then((res) => {
             setCategories(res.data || []);
         })
@@ -35,7 +35,7 @@ const Shop = () => {
         if (sortOrder === 'low') params.sort = 'price_asc';
         else if (sortOrder === 'high') params.sort = 'price_desc';
 
-        const res = await axiosSecure.get('http://localhost:3000/products', { params });
+        const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/products', { params });
         return res.data;
     };
 

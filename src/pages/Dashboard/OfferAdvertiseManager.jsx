@@ -19,7 +19,7 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
 
   const fetchSellerProducts = async () => {
     const params = { sellerEmail: user.email };
-    const res = await axiosSecure.get('http://localhost:3000/products', { params });
+    const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/products', { params });
     return res.data;
   };
 
@@ -62,7 +62,7 @@ const OfferAdvertiseManager = ({ sellerEmail }) => {
         description,
       };
 
-      await axiosSecure.post('http://localhost:3000/admin/offer-requests', data);
+      await axiosSecure.post('https://ph-assignment-12-backend.vercel.app/admin/offer-requests', data);
 
       dialogRef.current.close();
       setOfferPercentage('');

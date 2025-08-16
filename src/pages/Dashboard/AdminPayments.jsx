@@ -10,7 +10,7 @@ const AdminPayments = () => {
   const { data: payments = [], isLoading } = useQuery({
     queryKey: ['payments'],
     queryFn: async () => {
-      const res = await axiosSecure.get('http://localhost:3000/payments');
+      const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/payments');
       return res.data;
     }
   });
@@ -18,7 +18,7 @@ const AdminPayments = () => {
   // Mutation to update payment status
   const mutation = useMutation({
     mutationFn: async (id) => {
-      return await axiosSecure.patch(`http://localhost:3000/payments/${id}`);
+      return await axiosSecure.patch(`https://ph-assignment-12-backend.vercel.app/payments/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['payments']);

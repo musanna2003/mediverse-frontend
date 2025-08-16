@@ -18,7 +18,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axiosSecure.get('http://localhost:3000/users/profile', {
+        const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/users/profile', {
             params: { email: user.email },
         });
         setUserData(res.data);
@@ -57,7 +57,7 @@ const Profile = () => {
             updated[editField] = editedValue;
             }
 
-            const res = await axios.put('http://localhost:3000/users/update', updated);
+            const res = await axios.put('https://ph-assignment-12-backend.vercel.app/users/update', updated);
 
             if (res.data?.modifiedCount > 0) {
             toast.success('Profile updated!');

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const Login = () => {
 
-    const { signInUser , googleSignIn,bk } = useAuth();
+    const { signInUser , googleSignIn } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const errorTost = (msg) =>{toast.error(msg, {
@@ -46,7 +46,7 @@ const Login = () => {
     }
 
     const handelGoogle = () =>{
-        alert(bk)
+        
         googleSignIn()
         .then((res) => {
             console.log(res)

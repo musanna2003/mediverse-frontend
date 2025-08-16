@@ -9,12 +9,12 @@ const Card = ({medicine}) => {
     const addToCart = async (email, p_id, qty = 1) => {
         
         try {
-        const res = await axios.post('http://localhost:3000/cart', {
+        const res = await axios.post('https://ph-assignment-12-backend.vercel.app/cart', {
             email,
             p_id,
             qty
         });
-        console.log('✅ Added to cart:', res.data);
+        
         toast.success('✅ Added to cart:', res.data)
         } catch (error) {
         console.error('❌ Failed to add to cart:', error);

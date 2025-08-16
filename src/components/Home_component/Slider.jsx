@@ -11,9 +11,9 @@ import 'swiper/css/navigation';
 // import required modules
 import { Autoplay, Navigation } from 'swiper/modules';
 import { useQuery,  } from '@tanstack/react-query';
-import axios from 'axios';
 import Hero from './Hero';
 import axiosSecure from '../../Utilities/axiosSecure.js'; // path as needed
+import Bannar from './Bannar.jsx';
 
 const Slider = () => {
 
@@ -21,7 +21,7 @@ const Slider = () => {
     const { data: ads = [], isLoading } = useQuery({
         queryKey: ['banner-ads'],
         queryFn: async () => {
-        const res = await axiosSecure.get('http://localhost:3000/admin/offer-requests');
+        const res = await axiosSecure.get('https://ph-assignment-12-backend.vercel.app/admin/offer-requests');
         console.log(res.data)
         return res.data;
         
@@ -39,13 +39,12 @@ const Slider = () => {
             disableOnInteraction: false,
         }}
         className="z-0">
-            <SwiperSlide><img className=' w-full max-h-[95vh]' src="https://images.pexels.com/photos/208512/pexels-photo-208512.jpeg " alt="" /></SwiperSlide>
             {
                 ads
                     .filter(ad => ad.isActive) // ✅ Only include ads where isActive === true
                     .map((ad, index) => (
                         <SwiperSlide key={index}>
-                            <Hero img={ad.image} txt={ad.description} />
+                            <Bannar img={ad.image} txt={ad.description} />
                         </SwiperSlide>
                     ))
             }
