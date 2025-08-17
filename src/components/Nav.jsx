@@ -29,6 +29,19 @@ const Nav = () => {
   return (
     <div className="navbar bg-primary/80 backdrop-blur-md text-white shadow-md sticky top-0 z-[1000]">
       <div className="navbar-start">
+         {/* Mobile Nav */}
+        <div className="dropdown dropdown-end lg:hidden">
+          <label tabIndex={0} className="btn btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M4 6h16M4 12h8m-8 6h16" />
+            </svg>
+          </label>
+          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[999] p-2 shadow bg-base-100 rounded-box w-52 text-black">
+            {navLinks}
+          </ul>
+        </div>
         <Link to="/" className="btn btn-ghost text-xl normal-case">MediVerse</Link>
       </div>
 
@@ -48,19 +61,7 @@ const Nav = () => {
           */}
         </NavLink>
 
-        {/* Mobile Nav */}
-        <div className="dropdown dropdown-end lg:hidden">
-          <label tabIndex={0} className="btn btn-ghost">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M4 6h16M4 12h8m-8 6h16" />
-            </svg>
-          </label>
-          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[999] p-2 shadow bg-base-100 rounded-box w-52 text-black">
-            {navLinks}
-          </ul>
-        </div>
+       
 
         {/* Auth Actions */}
         {!user ? (
