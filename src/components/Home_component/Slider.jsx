@@ -38,7 +38,7 @@ const Slider = () => {
             delay: 3000, // time in ms between slides (3 seconds)
             disableOnInteraction: false,
         }}
-        className="z-0">
+        className="z-0 w-[95vw] mx-auto">
             {
                 ads
                     .filter(ad => ad.isActive) // ✅ Only include ads where isActive === true
