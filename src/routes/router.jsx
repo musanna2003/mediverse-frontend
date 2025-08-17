@@ -29,6 +29,7 @@ import ManageCategories from "../pages/Dashboard/ManageCategories";
 import AdminDashboard from "../pages/Dashboard/AdminDashboard";
 import SellerDashboard from "../pages/Dashboard/SellerDashboard";
 import RoleBasedRoute from "./privet_route/RoleBasedRoute";
+import About from "../pages/root/About";
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             {
                 path : "/shop",
                 Component : Shop,
+            },
+            {
+                path : "/about",
+                element : <About></About>,
             },
             {
                 path : "/login",
