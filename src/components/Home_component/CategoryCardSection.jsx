@@ -25,7 +25,7 @@ const CategoryCardSection = () => {
   }
 
   return (
-    <section className="py-10 px-4 md:px-10 bg-base-100">
+    <section className="px-4 md:px-10 bg-base-100">
       <h2 className="text-3xl font-bold text-center mb-8">Browse by Category</h2>
       <div className="grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
         {categories.map((category, index) => (

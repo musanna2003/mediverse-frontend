@@ -43,7 +43,7 @@ const features = [
 
 const WhyChooseUs = () => {
   return (
-    <div className="my-16 px-4 max-w-7xl mx-auto">
+    <div className="px-4 mb-20 max-w-7xl mx-auto">
       <h2 className="text-3xl font-bold text-center mb-10">Why Choose Us</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {features.map((item, index) => (
