@@ -10,7 +10,8 @@ const Shop = () => {
 
     const location = useLocation();
     const cat = location.state?.category || 'All'; // default fallback
-    const [searchTerm, setSearchTerm] = useState('');
+    const searchQuery = location.state?.search || "";
+    const [searchTerm, setSearchTerm] = useState(searchQuery);
     const [sortOrder, setSortOrder] = useState('');
     const [selectedCategory, setSelectedCategory] = useState(cat);
     const [categories, setCategories] = useState([]);
