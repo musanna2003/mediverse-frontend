@@ -54,7 +54,7 @@ const Shop = () => {
    
 
     return (
-        <div className="max-w-7xl mx-auto p-4">
+        <div className="max-w-7xl mx-auto p-4 min-h-screen">
             {/* 🔍 Filters and Sorting */}
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
                 {/* Search bar */}

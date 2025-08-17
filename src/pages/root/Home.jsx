@@ -8,7 +8,7 @@ import Hero from '../../components/Home_component/Hero';
 
 const Home = () => {
     return (
-        <div>
+        <div className='space-y-8'>
             <Hero></Hero>
             <CategoryCardSection></CategoryCardSection>
             <Slider></Slider>

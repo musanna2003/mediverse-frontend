@@ -24,7 +24,7 @@ const Card = ({medicine}) => {
     const { name, description, image, price } = medicine;
 
     return (
-        <div className="card w-full bg-base-100 shadow-md border border-base-200 hover:shadow-lg transition">
+        <div className="card w-full min-h-100 bg-base-100 shadow-md border border-base-200 hover:shadow-lg transition">
             <figure>
                 <img src={image} alt={name} className="h-40 w-full object-cover" />
             </figure>
